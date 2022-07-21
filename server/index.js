@@ -4,6 +4,7 @@ const http = require('http')
 const {Server} = require('socket.io')
 const cors = require('cors')
 const { SocketAddress } = require('net')
+const { verify } = require('crypto')
 //END IMPORTS
 
 
@@ -24,25 +25,77 @@ const io = new Server(server,  {
 })
 //END SERVER INIT
 
-//set static folder
-
 //socket gives the user, get its id with socket.id
 io.on('connection', socket => {
     console.log('New WS Connection....', socket.id)
 
-    //socket gets put in a room sent from the front end 
-    socket.on("joinRoom", (data) => {
-        socket.join(data.room)
-        console.log(`joined room ${data.room}`)
+
+    async function verifyConnection(data) {
+        const sockets = await io.in(data.roomID).fetchSockets();
+        console.log('SOCKETS CONNECTED :', sockets.length)
+        console.log('Verifying connection for new socket...')
+        console.log('Socket Info:')
+        console.log(`
+            {
+                username: ${data.username}
+                judge id: ${data.judgeID}
+            }
+        `)
+        // console.log('CURRENT SOCKET: ',socket)
+        
+        isDC = false
+
+        sockets.forEach(roomSocket => {
+
+            // console.log('ITERATING SOCKET', roomSocket)
+            if(isDC) {return}
+
+            if(roomSocket.username === data.username){
+                //TODO deny connection and return error msg
+                console.log("VERIFICATION ERROR: SOCKET USED DUPLICATE USERNAME")
+                console.log(`${roomSocket.id} conflicted with ${socket.id}`)
+                console.log(`conflicting username was ${roomSocket.username} === ${data.username}`)
+                socket.emit('connectionDenied', {errorMessage: "There is already somebody with this username connected!"})
+                socket.disconnect(true)
+                isDC = true
+                return
+            } else if (roomSocket.judgeID === data.judgeID) {
+                //TODO deny connection and return error msg
+                console.log("VERIFICATION ERROR: SOCKET USED DUPLICATE JUDGE ID")
+                socket.emit('connectionDenied', {errorMessage: "This judge role is already taken!"})
+                socket.disconnect(true)
+                isDC = true
+                return
+            }
+        })
+
+        
+        if(!isDC) { console.log('Connection Verified!') }
+    }
+
+
+    //socket gets put in a room sent from the front end
+    socket.on("joinRoom", async (data) => {
+
+        //TODO VERIFICATION IS CURRENTLY TURNED OFF!!!!
+        await verifyConnection(data)
+
+        socket.judgeID = data.judgeID
+        socket.username = data.username
+        socket.lightState = "NOT ATTEMPTED"
+
+
+        socket.join(data.roomID)
+        console.log(`joined room ${data.roomID}`)
     })
 
-    //received light change from referee
-    socket.on('sendLight', (data) => {
+    //received light change from judge/client
+    socket.on('sendLightToServer', (data) => {
         console.log(data.newLightState)
 
-        //send it back to all referees in the sender's room
-        socket.in(data.room).emit("receiveLight", {newLightState: data.newLightState})
-        socket.emit("receiveLight", {newLightState: data.newLightState})
+        //send it back to all judge/client in the sender's room
+        socket.in(data.roomID).emit("receiveLightFromServer", {newLightState: data.newLightState})
+        socket.emit("receiveLightFromServer", {newLightState: data.newLightState})
     })
 
 

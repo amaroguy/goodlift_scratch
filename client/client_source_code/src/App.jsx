@@ -11,8 +11,8 @@ import DownloadDataButton from './Components/DownloadDataButton.jsx'
 import Foo from './Foo'
 import HomePage from './Components/HomePage/HomePage'
 import MeetManager from './Components/MeetManager/MeetManager'
-import RefUI from './Components/RefLights/RefUI'
 import RefLights from './Components/RefLights/RefLights'
+import RefConnectForm from './Components/RefLights/RefConnectForm'
 
 function App() {
 
@@ -21,7 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage/>} />
         <Route path="manage" element = {<MeetManager/>} />
-        <Route path="judge" element = {<RefUI/>} /> 
+        <Route path="judge" element = {<RefConnectForm/>} /> 
         <Route path = "judge/join" element = {<RefLights/>}/>
       </Routes>
     </BrowserRouter>
