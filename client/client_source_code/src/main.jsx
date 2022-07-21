@@ -11,8 +11,7 @@ import {LifterContextProvider} from './Components/LifterContext'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <LifterContextProvider>
-      {/* <App /> loads table rn*/}
-      <RefUI/>
+      <App/>
     </LifterContextProvider>
   </React.StrictMode>
 )

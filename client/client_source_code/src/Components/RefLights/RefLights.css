@@ -2,23 +2,11 @@
 .ref-light-one,
 .ref-light-two,
 .ref-light-three {
+    background-color: black;
     border: 10px solid black;
     height: 50px;
     width: 50px;
+    border-radius: 50%;
 }
 
-.ref-light-one {
-    border-radius: 50%;
-    background-color: red;
-}
-
-.ref-light-two {
-    border-radius: 50%;
-    background-color: white;
-}
-
-.ref-light-three {
-    border-radius: 50%;
-    background-color: gray;
-}
 

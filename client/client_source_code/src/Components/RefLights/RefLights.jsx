@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './RefLights.css'
 import io from 'socket.io-client'
+import { useSearchParams } from 'react-router-dom'
 
 const LIFT_NOT_ATTEMPTED = "NOT ATTEMPTED"
 const GOOD_LIFT = "GOOD LIFT"
@@ -15,15 +16,35 @@ const socket = io.connect("http://localhost:3001")
 //Moved The Room joining so we can pass the room as props
 export default function RefLights(props){
 
-    console.log(`Loaded component with room ID ${props.roomID}`)
+    //gets the variables from query string
+    const [searchParams] = useSearchParams()
+    const username  = searchParams.get('username')
+    const qsRoomID = searchParams.get('roomID')
+    const qsJudgeID = searchParams.get('judgeID')
 
+
+    const [lights, setLights] = useState({refOne: LIFT_NOT_ATTEMPTED, refTwo: LIFT_NOT_ATTEMPTED, refThree: LIFT_NOT_ATTEMPTED})
+
+
+    console.log("QUERY STRING PARAM USERNAME:", username)
+    console.log("QUERY STRING PARAM ROOMID:", qsRoomID)
+
+    //ERROR HANDLING
+    if(!username || !qsRoomID  || !qsJudgeID){
+        return (
+            <h1> Something Went Wrong! Try again! </h1>
+        )
+    }
+
+    console.log(`Loaded component with room ID ${qsRoomID}`)
+
+    //START SOCKET INTERACTION 
     useEffect( () => {
+        //we do NOT want to be sending this every time the component rerenders 
         socket.emit('joinRoom', {room: props.roomID})
         console.log(`Joined room ${props.roomID}`)
         }
     ,[])
-
-    const [lights, setLights] = useState({refOne: LIFT_NOT_ATTEMPTED, refTwo: LIFT_NOT_ATTEMPTED, refThree: LIFT_NOT_ATTEMPTED})
 
     async function socketSetLight(newLightState){
         await socket.emit('sendLight', {newLightState, room: props.roomID})
@@ -33,6 +54,8 @@ export default function RefLights(props){
         console.log('Received light from server!')
         setLight(REF_ONE, data.newLightState)
     })
+
+    //END SOCKET INTERACTION
 
 
 
