@@ -1,0 +1,61 @@
+:root {
+    --table-rad: 5px;
+}
+
+/* Remove annoying gap, color entire table */
+table {
+    background-color: lightgray;
+    border-radius: var(--table-rad);
+    border-spacing: 0;
+}
+
+/* Make grid */
+th, td {
+    border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    padding: 10px;
+}
+
+th {
+    border-top: 1px solid red
+}
+
+table tbody tr td:first-child,
+table tbody tr th:first-child{
+    border-left: 1px solid red;
+}
+
+/* TABLE CORNER ROUNDING */
+
+/* Rount bottom left */
+table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--table-rad);
+}
+
+/* Round bottom right */
+table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--table-rad);
+}
+
+/* Round top left */
+table tbody tr:first-child th:first-child {
+    border-top-left-radius: var(--table-rad);
+}
+
+
+/* Round top right */
+table tbody tr:first-child th:last-child {
+    border-top-right-radius: var(--table-rad);
+}
+
+input[type="text"]{
+    background-color: lightgray;
+}
+
+input[type="text"]:focus{
+    background-color: pink;
+}
+
+.lift-entry {
+    width: 45px;
+}
