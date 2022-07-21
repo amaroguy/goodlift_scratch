@@ -26,6 +26,7 @@ const io = new Server(server,  {
 //END SERVER INIT
 
 //socket gives the user, get its id with socket.id
+//TODO REFACTOR, REPLACE FOREACH WITH FOR LOOP IN ORDER FOR BREAK TO WORK
 io.on('connection', socket => {
     console.log('New WS Connection....', socket.id)
 
@@ -62,7 +63,7 @@ io.on('connection', socket => {
             } else if (roomSocket.judgeID === data.judgeID) {
                 //TODO deny connection and return error msg
                 console.log("VERIFICATION ERROR: SOCKET USED DUPLICATE JUDGE ID")
-                socket.emit('connectionDenied', {errorMessage: "This judge role is already taken!"})
+                socket.emit('connectionDenied', {errorMessage: "This judge seat is already taken!"})
                 socket.disconnect(true)
                 isDC = true
                 return
@@ -94,8 +95,8 @@ io.on('connection', socket => {
         console.log(data.newLightState)
 
         //send it back to all judge/client in the sender's room
-        socket.in(data.roomID).emit("receiveLightFromServer", {newLightState: data.newLightState})
-        socket.emit("receiveLightFromServer", {newLightState: data.newLightState})
+        socket.in(data.roomID).emit("receiveLightFromServer", {judgeID: data.judgeID, newLightState: data.newLightState})
+        socket.emit("receiveLightFromServer", {judgeID: data.judgeID, newLightState: data.newLightState})
     })
 
 

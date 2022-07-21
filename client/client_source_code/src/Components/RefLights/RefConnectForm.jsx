@@ -8,6 +8,11 @@ export default function RefConnectForm(){
     const [judgeID, setJudgeID] = useState(0)
     const RRNavigate = useNavigate()
 
+    //TODO CHANGE THESE BACK!!!!
+    const REF_ONE = "judgeLeft"
+    const REF_TWO = "judgeMid"
+    const REF_THREE = "judgeRight"
+
     const selectedStyle = {backgroundColor: "orange"}
     const errorStyle = {
         color: "red",
@@ -38,9 +43,9 @@ export default function RefConnectForm(){
             <input type="text" placeholder= "Username" value= {username} onChange = {(e) => setUsername(e.target.value)} style = {{margin: "10px"}}/>
 
             <h2> Select Judge Role </h2> 
-            <button className = "judgeButtons" style = {judgeID === 1 ? selectedStyle : {}} onClick = {() => {setJudgeID(1)}}> Left Side Judge </button>
-            <button className = "judgeButtons" style = {judgeID === 2 ? selectedStyle : {}} onClick = {() => {setJudgeID(2)}}> Right Side Judge </button>
-            <button className = "judgeButtons" style = {judgeID === 3 ? selectedStyle : {}} onClick = {() => {setJudgeID(3)}}> Front Judge </button>
+            <button className = "judgeButtons" style = {judgeID === REF_ONE ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_ONE)}}> Left Side Judge </button>
+            <button className = "judgeButtons" style = {judgeID === REF_TWO ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_TWO)}}> Right Side Judge </button>
+            <button className = "judgeButtons" style = {judgeID === REF_THREE ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_THREE)}}> Front Judge </button>
             <br/> 
             <button onClick={logRefIn} style = {{backgroundColor: "salmon", marginTop: "20px"}}> Log In! </button>
         </>

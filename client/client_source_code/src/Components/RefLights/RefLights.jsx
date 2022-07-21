@@ -1,15 +1,16 @@
 import React, {useState, useEffect, useRef} from 'react'
 import './RefLights.css'
 import io from 'socket.io-client'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
 const LIFT_NOT_ATTEMPTED = "NOT ATTEMPTED"
 const GOOD_LIFT = "GOOD LIFT"
 const BAD_LIFT = "BAD LIFT"
 
-const REF_ONE = "refOne"
-const REF_TWO = "refTwo"
-const REF_THREE = "refThree"
+//TODO CHANGE THESE BACK!!!!!!
+const REF_ONE = "judgeLeft"
+const REF_TWO = "judgeMid"
+const REF_THREE = "judgeRight"
 
 
 //Moved The Room joining so we can pass the room as props
@@ -25,6 +26,7 @@ export default function RefLights(props){
     const [lights, setLights] = useState({refOne: LIFT_NOT_ATTEMPTED, refTwo: LIFT_NOT_ATTEMPTED, refThree: LIFT_NOT_ATTEMPTED})
     console.log('foo')
     const clientSocket = useRef()
+    const redirectFunction = useNavigate()
 
     
     
@@ -42,20 +44,27 @@ export default function RefLights(props){
         socket.emit('joinRoom', {username, roomID: qsRoomID, judgeID: qsJudgeID})
         
         socket.on('connectionDenied', (data) => {
-            return <h3> data.errorMessage</h3>
+            setErrorMessage(data.errorMessage)
+            setTimeout(() => {redirectFunction("/judge")}, 5000)
         })
         
         async function socketSetLight(newLightState){
-            await socket.emit('sendLightToServer', {newLightState, roomID: qsRoomID, refID: qsJudgeID})
+            await socket.emit('sendLightToServer', {newLightState, roomID: qsRoomID, judgeID: qsJudgeID})
         }
         
         socket.on("receiveLightFromServer", (data) => {
-            console.log('Received light from server!')
-            setLight(REF_ONE, data.newLightState)
+            console.log('Received light from server! Judge ID:', data.judgeID)
+            setLight(data.judgeID, data.newLightState)
         })
 
+        //I cannot call socketSetLight since it is out of scope, using a ref declared outside
+        //Learned that useEffect, even when just onMount, runs after the outer code is run 
         clientSocket.current = socket
         clientSocket.current.socketSetLight = socketSetLight
+
+        return () => {
+            socket.disconnect()
+        }
     }, [])
 
     console.log(`Loaded component with room ID ${qsRoomID}`)
@@ -88,19 +97,23 @@ export default function RefLights(props){
         }
     }
 
+    if(errorMessage){
+        return (<><h3>You've been disconnected by the server for reason:</h3> <h3>{errorMessage}</h3> <h3>You will be returned to the login page shortly</h3></>)
+    }
+
 
     return (
-        <>
-            <div className = "lights-container">
+        <>  <div> <h3>JUDGE ID: {qsJudgeID}</h3> <h3>This is for platform: {qsRoomID}</h3> <h3>Your username is: {username}</h3></div>
+            <div className = "lights-container" style = {{display: "flex", justifyContent: "center"}}>
                 <div style = {getLightStyle(REF_ONE)} className = "ref-light-one">Light One</div>
-                <div  className = "ref-light-two">Light Two</div>
-                <div  className = "ref-light-three">Light Three</div>
+                <div style = {getLightStyle(REF_TWO)} className = "ref-light-two">Light Two</div>
+                <div style = {getLightStyle(REF_THREE)} className = "ref-light-three">Light Three</div>
                 
-                <div className="buttons-container-ref-one">
-                    <button onClick = {() => clientSocket.current.socketSetLight(GOOD_LIFT)}>Set Light 1 to Good Lift</button>
-                    <button onClick = {() => clientSocket.current.socketSetLight(BAD_LIFT)}>Set Light 2 to No Lift</button>
-                    <button onClick = {() => clientSocket.current.socketSetLight(LIFT_NOT_ATTEMPTED)}>Set Light 3 to Not Attempted</button>
-                </div>
+            </div>
+            <div className="buttons-container-ref-one">
+                <button onClick = {() => clientSocket.current.socketSetLight(GOOD_LIFT)}>Set Light 1 to Good Lift</button>
+                <button onClick = {() => clientSocket.current.socketSetLight(BAD_LIFT)}>Set Light 2 to No Lift</button>
+                <button onClick = {() => clientSocket.current.socketSetLight(LIFT_NOT_ATTEMPTED)}>Set Light 3 to Not Attempted</button>
             </div>
         </>
     )
