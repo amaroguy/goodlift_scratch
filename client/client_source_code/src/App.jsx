@@ -13,6 +13,8 @@ import HomePage from './Components/HomePage/HomePage'
 import MeetManager from './Components/MeetManager/MeetManager'
 import RefLights from './Components/RefLights/RefLights'
 import RefConnectForm from './Components/RefLights/RefConnectForm'
+import Bar from './Bar'
+import LifterTableSpectatorMode from './Components/LifterTableSpectatorMode'
 
 function App() {
 
@@ -23,6 +25,8 @@ function App() {
         <Route path="manage" element = {<MeetManager/>} />
         <Route path="judge" element = {<RefConnectForm/>} /> 
         <Route path = "judge/join" element = {<RefLights/>}/>
+        <Route path = "debug" element = {<Bar/>}/>
+        <Route path = "spectate/:id" element = {<LifterTableSpectatorMode/>} />
       </Routes>
     </BrowserRouter>
   )

@@ -1,0 +1,49 @@
+.table-nav {
+    display: flex;
+}
+
+.table-nav-judge-light {
+    width: 50px;
+    height: 50px;
+    border: 3px solid black;
+    border-radius: 50%;
+}
+
+.table-nav-txt {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+
+div.table-nav button.table-nav-platform-tab:first-of-type {
+    margin-left: auto;
+}
+
+div.table-nav button.table-nav-platform-tab:last-of-type {
+    margin-right: 5px;
+}
+
+.table-nav-platform-tab {
+    background-color: #F1F1F1F1;
+    margin-left: 5px;
+    border-radius: 3px 3px 0 0;
+    opacity: 100%
+    
+}
+
+.table-nav-judge-lights-container{
+    display: flex;
+    justify-content: space-between;
+    width: 170px;
+}
+
+.btn {
+    border-radius: 3px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 8px;
+    background-color: darkgray; 
+    font-weight: bold 
+}
+
+

@@ -49,25 +49,27 @@ function LifterTable (props) {
 
 
 
-    return (
-        <>
-            <table>
-                <tbody>
-                    <tr>
-                        {generateTableHeadings()}
-                    </tr>
-                    {generateLifterRows()}
-                </tbody>
-            </table>
+    // return (
+    //     <>
+    //         <table>
+    //             <tbody>
+    //                 <tr>
+    //                     {generateTableHeadings()}
+    //                 </tr>
+    //                 {generateLifterRows()}
+    //             </tbody>
+    //         </table>
             
-            { props.spectatorMode ?  <h2>Spectator Mode</h2> : 
-                <>
-                    <input type="text" placeholder="Streaming ID" value={resultsStreamingID} onChange = {(e) => setResultsStreamingID(e.target.value)}/> 
-                    <button className="btn" style = {{marginRight: "20px"}} onClick={() => startResultsStream()}> Start Streaming results table </button>
-                </> 
-            }
-        </>
-        )
-}
+    //         { props.spectatorMode ?  <h2>Spectator Mode</h2> : 
+    //             <>
+    //                 <input type="text" placeholder="Streaming ID" value={resultsStreamingID} onChange = {(e) => setResultsStreamingID(e.target.value)}/> 
+    //                 <button className="btn" style = {{marginRight: "20px"}} onClick={() => startResultsStream()}> Start Streaming results table </button>
+    //             </> 
+    //         }
+    //     </>
+    //     )
 
-export default LifterTable
+    return (
+        <h1>Spectator Mode</h1>
+    )
+}

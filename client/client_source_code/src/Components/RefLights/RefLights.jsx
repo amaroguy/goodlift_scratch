@@ -2,15 +2,8 @@ import React, {useState, useEffect, useRef} from 'react'
 import './RefLights.css'
 import io from 'socket.io-client'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-
-const LIFT_NOT_ATTEMPTED = "NOT ATTEMPTED"
-const GOOD_LIFT = "GOOD LIFT"
-const BAD_LIFT = "BAD LIFT"
-
-//TODO CHANGE THESE BACK!!!!!!
-const REF_ONE = "judgeLeft"
-const REF_TWO = "judgeMid"
-const REF_THREE = "judgeRight"
+import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED } from '../../util'
+import { REF_SIDE_LEFT, REF_SIDE_RIGHT, REF_MIDDLE } from '../../util'
 
 
 //Moved The Room joining so we can pass the room as props
@@ -85,7 +78,7 @@ export default function RefLights(props){
             return {
                 backgroundColor: "white"
             }
-        } else if (lights[refNum] === BAD_LIFT) {
+        } else if (lights[refNum] === NO_LIFT) {
             return {
                 backgroundColor: "red"
             }
@@ -105,15 +98,14 @@ export default function RefLights(props){
     return (
         <>  <div> <h3>JUDGE ID: {qsJudgeID}</h3> <h3>This is for platform: {qsRoomID}</h3> <h3>Your username is: {username}</h3></div>
             <div className = "lights-container" style = {{display: "flex", justifyContent: "center"}}>
-                <div style = {getLightStyle(REF_ONE)} className = "ref-light-one">Light One</div>
-                <div style = {getLightStyle(REF_TWO)} className = "ref-light-two">Light Two</div>
-                <div style = {getLightStyle(REF_THREE)} className = "ref-light-three">Light Three</div>
-                
+                <div style = {getLightStyle(REF_SIDE_LEFT)} className = "ref-light-one">Light One</div>
+                <div style = {getLightStyle(REF_MIDDLE)} className = "ref-light-two">Light Two</div>
+                <div style = {getLightStyle(REF_SIDE_RIGHT)} className = "ref-light-three">Light Three</div>
             </div>
             <div className="buttons-container-ref-one">
-                <button onClick = {() => clientSocket.current.socketSetLight(GOOD_LIFT)}>Set Light 1 to Good Lift</button>
-                <button onClick = {() => clientSocket.current.socketSetLight(BAD_LIFT)}>Set Light 2 to No Lift</button>
-                <button onClick = {() => clientSocket.current.socketSetLight(LIFT_NOT_ATTEMPTED)}>Set Light 3 to Not Attempted</button>
+                <button onClick = {() => clientSocket.current.socketSetLight(GOOD_LIFT)}>Good Lift</button>
+                <button onClick = {() => clientSocket.current.socketSetLight(NO_LIFT)}>No Lift</button>
+                <button onClick = {() => clientSocket.current.socketSetLight(LIFT_NOT_ATTEMPTED)}>Not Attempted</button>
             </div>
         </>
     )

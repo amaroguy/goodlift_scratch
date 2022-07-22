@@ -31,6 +31,23 @@ io.on('connection', socket => {
     console.log('New WS Connection....', socket.id)
 
 
+    //RESULTS TABLE STREAMING
+    socket.on('initResultsStreamingRoom', (data) => {
+        socket.join(data.resultsStreamingID)
+        console.log('Started Room:', data.streamingRoomID)
+    })
+
+    socket.on('joinResultsStreamingRoom', (data) => {
+        socket.join(data.resultsStreamingID)
+    })
+
+
+    //DEBUG
+    socket.on('foo', (data) => {
+        socket.emit('bar', {msg: `I received the message "${data.msg}" from ${socket.id}`})
+    })
+
+
     async function verifyConnection(data) {
         const sockets = await io.in(data.roomID).fetchSockets();
         console.log('SOCKETS CONNECTED :', sockets.length)
@@ -51,7 +68,8 @@ io.on('connection', socket => {
             // console.log('ITERATING SOCKET', roomSocket)
             if(isDC) {return}
 
-            if(roomSocket.username === data.username){
+            //Short circuit these checks if its a spectator, actually move these out but im too lazy because its 3am
+            if((roomSocket.judgeID !== "SPECTATOR") && (roomSocket.username === data.username)){
                 //TODO deny connection and return error msg
                 console.log("VERIFICATION ERROR: SOCKET USED DUPLICATE USERNAME")
                 console.log(`${roomSocket.id} conflicted with ${socket.id}`)
@@ -60,7 +78,7 @@ io.on('connection', socket => {
                 socket.disconnect(true)
                 isDC = true
                 return
-            } else if (roomSocket.judgeID === data.judgeID) {
+            } else if ((roomSocket.judgeID !== "SPECTATOR") && (roomSocket.judgeID === data.judgeID)) {
                 //TODO deny connection and return error msg
                 console.log("VERIFICATION ERROR: SOCKET USED DUPLICATE JUDGE ID")
                 socket.emit('connectionDenied', {errorMessage: "This judge seat is already taken!"})
@@ -78,7 +96,6 @@ io.on('connection', socket => {
     //socket gets put in a room sent from the front end
     socket.on("joinRoom", async (data) => {
 
-        //TODO VERIFICATION IS CURRENTLY TURNED OFF!!!!
         await verifyConnection(data)
 
         socket.judgeID = data.judgeID

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { REF_SIDE_LEFT, REF_SIDE_RIGHT, REF_MIDDLE } from '../../util'
 
 export default function RefConnectForm(){
     const [errorMsg, setErrorMsg] = useState("")
@@ -7,11 +8,6 @@ export default function RefConnectForm(){
     const [roomID, setRoomID] = useState("")
     const [judgeID, setJudgeID] = useState(0)
     const RRNavigate = useNavigate()
-
-    //TODO CHANGE THESE BACK!!!!
-    const REF_ONE = "judgeLeft"
-    const REF_TWO = "judgeMid"
-    const REF_THREE = "judgeRight"
 
     const selectedStyle = {backgroundColor: "orange"}
     const errorStyle = {
@@ -43,9 +39,9 @@ export default function RefConnectForm(){
             <input type="text" placeholder= "Username" value= {username} onChange = {(e) => setUsername(e.target.value)} style = {{margin: "10px"}}/>
 
             <h2> Select Judge Role </h2> 
-            <button className = "judgeButtons" style = {judgeID === REF_ONE ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_ONE)}}> Left Side Judge </button>
-            <button className = "judgeButtons" style = {judgeID === REF_TWO ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_TWO)}}> Right Side Judge </button>
-            <button className = "judgeButtons" style = {judgeID === REF_THREE ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_THREE)}}> Front Judge </button>
+            <button className = "judgeButtons" style = {judgeID === REF_SIDE_LEFT ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_SIDE_LEFT)}}> Left Side Judge </button>
+            <button className = "judgeButtons" style = {judgeID === REF_SIDE_RIGHT ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_SIDE_RIGHT)}}> Right Side Judge </button>
+            <button className = "judgeButtons" style = {judgeID === REF_MIDDLE ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_MIDDLE)}}> Front Judge </button>
             <br/> 
             <button onClick={logRefIn} style = {{backgroundColor: "salmon", marginTop: "20px"}}> Log In! </button>
         </>

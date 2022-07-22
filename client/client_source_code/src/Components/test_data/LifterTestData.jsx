@@ -105,7 +105,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "40kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
@@ -123,7 +123,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "4kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
@@ -141,7 +141,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "400kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
@@ -165,7 +165,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "400kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
@@ -183,7 +183,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "400kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
@@ -201,7 +201,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "400kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
@@ -225,7 +225,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "4kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
@@ -243,7 +243,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "4kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
@@ -261,7 +261,7 @@ const TESTING_TABLE_DATA = {
                     },
                     attemptTwo: {
                         weight: "4kg",
-                        status: "BAD LIFT",
+                        status: "NO LIFT",
                         lights: [1,1,0]
                     },
                     attemptThree: {
