@@ -1,38 +1,37 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useEffect, useState} from 'react'
 import { LifterContext } from './LifterContext.jsx'
 import LifterDataRow from './LifterDataRow.jsx'
 import './LifterTable.css'
 import io from 'socket.io-client'
+import { useParams } from 'react-router-dom'
 
 //IF YOU CHANGE THIS, ADD A NEW <TD> TO LIFTERDATAROW
 const TABLE_HEADINGS = ['','Name','Weight','Squat', 'Bench', 'Deadlift']
 const HEADING_SPANS = [1,1,1,3,3,3]
 
-
-
 //LifterTable Spectator Mode?
-function LifterTable (props) {
+export default function LifterTableSpectatorMode(props) {
 
-    const Context = React.useContext(LifterContext)
     let StreamingSocketRef = useRef(null)
+    let {resultsStreamingID} = useParams()
+    //idea for later use: make this a hook, which returns the functions we need to modify the data,
+    //pass it into the rows section and the context menu should work. 
+    const [tableData, setTableData] = useState({lifters: []})
 
-    const [resultsStreamingID, setResultsStreamingID] = useState("")
-
-    function startResultsStream(){
-
-        if(StreamingSocketRef.current){
-            console.log("You're already Connected!")
-            return
-        }
-
-        StreamingSocketRef.current = io.connect("http://localhost:3001")
-        StreamingSocketRef.current.emit('initResultsStreamingRoom', {streamingRoomID: resultsStreamingID, username: "HOST"})
-
-        StreamingSocketRef.current.on('compDataRequest', (data) => {
-            StreamingSocketRef.current.emit('compDataResponse', 
-            {compData: Context.compData.lifters, tableHeadings: TABLE_HEADINGS, headingSpans:HEADING_SPANS})
-        })
+    function testCallback(foo){
+        console.log(foo)
     }
+
+    useEffect(() => {
+        const StreamingSocket = io.connect("http://localhost:3001")
+
+        StreamingSocket.emit('joinResultsStreamingRoom', resultsStreamingID, ({tableData}) => {setTableData(tableData)})
+
+        StreamingSocket.on('tableDataUpdated', (data) => {
+            setTableData(data.newTableData)
+        })
+    }, [])
+
 
     function generateTableHeadings(){
         return TABLE_HEADINGS.map((title, index) => {
@@ -44,32 +43,23 @@ function LifterTable (props) {
 
 
     function generateLifterRows(){
-        return Context.compData.lifters.map(lifter => <LifterDataRow lifter={lifter} setFocusedLifter = {props.setFocusedLifter}/>)
+        return tableData.lifters.map(lifter => <LifterDataRow lifter={lifter} setFocusedLifter = {props.setFocusedLifter} spectate={true}/>)
     }
 
 
 
-    // return (
-    //     <>
-    //         <table>
-    //             <tbody>
-    //                 <tr>
-    //                     {generateTableHeadings()}
-    //                 </tr>
-    //                 {generateLifterRows()}
-    //             </tbody>
-    //         </table>
-            
-    //         { props.spectatorMode ?  <h2>Spectator Mode</h2> : 
-    //             <>
-    //                 <input type="text" placeholder="Streaming ID" value={resultsStreamingID} onChange = {(e) => setResultsStreamingID(e.target.value)}/> 
-    //                 <button className="btn" style = {{marginRight: "20px"}} onClick={() => startResultsStream()}> Start Streaming results table </button>
-    //             </> 
-    //         }
-    //     </>
-    //     )
-
     return (
-        <h1>Spectator Mode</h1>
-    )
+        <>
+            <table>
+                <tbody>
+                    <tr>
+                        {generateTableHeadings()}
+                    </tr>
+                    {generateLifterRows()}
+                </tbody>
+            </table>
+            <h3>You are spectating!</h3>
+        </>
+        )
+
 }

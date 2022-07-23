@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {TESTING_TABLE_DATA as COMP_DUMMY_DATA, BLANK_LIFTER} from './test_data/LifterTestData'
 import {v4 as uuid} from 'uuid'
+import {produce} from 'immer'
 
 const LifterContext = React.createContext()
 
@@ -9,109 +10,61 @@ function LifterContextProvider(props){
 
     const [compData, setCompData] = useState(COMP_DUMMY_DATA)
 
-    function setName(lifterId, newName){
+    function setName(lifterID, newName){
         console.log("Setting Name")
-        setCompData(oldData => {
-            return {
-                ...oldData,
-                lifters: oldData.lifters.map(lifter => {
-                    if(lifter.id === lifterId){
-                        return {
-                            ...lifter,
-                            name: newName
-                        }
-                    } else {
-                        return lifter
-                    }
-                }),
-                competitionDetails: {...oldData.competitionDetails}
-            }
-        })
-    }
 
-    //chungus function
+        let index = compData.lifters.findIndex((lifter) => {
+            return lifter.id === lifterID
+        })
+
+
+        const newCompData = produce(compData, draft => {
+            draft.lifters[index].name = newName
+        })
+        setCompData(newCompData)
+
+}
+
     function setAttempt(lifterID, lift, attemptNum, newWeight){
 
-        setCompData(oldData => {
-            return {
-                ...oldData,
-                lifters: oldData.lifters.map(lifter => {
-
-                    if(lifter.id === lifterID){
-                    //Found the lifter we want
-                        return {
-                            ...lifter,
-                            lifts: {
-                                ...lifter.lifts,
-                                [lift]: {
-                                    ...lifter.lifts[lift],
-                                    [attemptNum]: {
-                                        ...lifter.lifts[lift][attemptNum],
-                                        weight: newWeight
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        return lifter
-                    }
-                }
-                ),
-                competitionDetails: {...oldData.competitionDetails}
-             }
+        let index = compData.lifters.findIndex((lifter) => {
+            return lifter.id === lifterID
         })
+
+        let newCompData = produce(compData, draft => {
+            draft.lifters[index]["lifts"][lift][attemptNum]["weight"] = newWeight
+        })
+
+        setCompData(newCompData)
+
     }
 
         //chungus function
-        function setAttemptStatus(lifterID, lift, attemptNum, newStatus){
+    function setAttemptStatus(lifterID, lift, attemptNum, newStatus){
 
-            setCompData(oldData => {
-                return {
-                    ...oldData,
-                    lifters: oldData.lifters.map(lifter => {
-    
-                        if(lifter.id === lifterID){
-                        //Found the lifter we want
-                            return {
-                                ...lifter,
-                                lifts: {
-                                    ...lifter.lifts,
-                                    [lift]: {
-                                        ...lifter.lifts[lift],
-                                        [attemptNum]: {
-                                            ...lifter.lifts[lift][attemptNum],
-                                            status: newStatus
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            return lifter
-                        }
-                    }
-                    ),
-                    competitionDetails: {...oldData.competitionDetails}
-                 }
-            })
-        }
-
-    function setWeight(lifterId, newWeightClass){
-        setCompData(oldData => {
-            return {
-                ...oldData,
-                lifters: oldData.lifters.map(lifter => {
-                    if(lifter.id === lifterId){
-                        return {
-                            ...lifter,
-                            weightClass: newWeightClass
-                        }
-                    } else {
-                        return lifter
-                    }
-                }),
-                competitionDetails: {...oldData.competitionDetails}
-            }
+        let index = compData.lifters.findIndex((lifter) => {
+            return lifter.id === lifterID
         })
+
+        let newCompData = produce(compData, draft => {
+            draft.lifters[index]["lifts"][lift][attemptNum]["status"] = newStatus
+        })
+
+        setCompData(newCompData)
+    }
+
+    function setWeight(lifterID, newWeightClass){
+
+        let index = compData.lifters.findIndex((lifter) => {
+            return lifter.id === lifterID
+        })
+
+        let newCompData = produce(compData, draft => {
+            draft.lifters[index]["weightClass"]= newWeightClass
+        })
+
+        setCompData(newCompData)
+
     }
 
     function addBlankLifter(){

@@ -26,7 +26,7 @@ function App() {
         <Route path="judge" element = {<RefConnectForm/>} /> 
         <Route path = "judge/join" element = {<RefLights/>}/>
         <Route path = "debug" element = {<Bar/>}/>
-        <Route path = "spectate/:id" element = {<LifterTableSpectatorMode/>} />
+        <Route path = "spectate/:resultsStreamingID" element = {<LifterTableSpectatorMode/>} />
       </Routes>
     </BrowserRouter>
   )

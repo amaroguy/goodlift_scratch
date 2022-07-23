@@ -3,6 +3,8 @@ import { LifterContext } from './LifterContext.jsx'
 import LifterDataRow from './LifterDataRow.jsx'
 import './LifterTable.css'
 import io from 'socket.io-client'
+import ContextMenuLightButtons from './ContextMenuLightButtons.jsx'
+import { useEffect } from 'react'
 
 //IF YOU CHANGE THIS, ADD A NEW <TD> TO LIFTERDATAROW
 const TABLE_HEADINGS = ['','Name','Weight','Squat', 'Bench', 'Deadlift']
@@ -17,21 +19,17 @@ function LifterTable (props) {
     let StreamingSocketRef = useRef(null)
 
     const [resultsStreamingID, setResultsStreamingID] = useState("")
+    const [lifterRows, setLifterRows] = useState(generateLifterRows())
 
     function startResultsStream(){
 
         if(StreamingSocketRef.current){
             console.log("You're already Connected!")
             return
-        }
+        } 
 
         StreamingSocketRef.current = io.connect("http://localhost:3001")
-        StreamingSocketRef.current.emit('initResultsStreamingRoom', {streamingRoomID: resultsStreamingID, username: "HOST"})
-
-        StreamingSocketRef.current.on('compDataRequest', (data) => {
-            StreamingSocketRef.current.emit('compDataResponse', 
-            {compData: Context.compData.lifters, tableHeadings: TABLE_HEADINGS, headingSpans:HEADING_SPANS})
-        })
+        StreamingSocketRef.current.emit("initResultsStreamingRoom", {tableData: Context.compData, resultsStreamingID})
     }
 
     function generateTableHeadings(){
@@ -42,13 +40,20 @@ function LifterTable (props) {
         })
     }
 
+    useEffect(() => {
+        console.log("foo")
+        if(StreamingSocketRef.current){
+            StreamingSocketRef.current.emit('hostUpdateTableData', {newTableData: Context.compData, resultsStreamingID})   
+        }
+    }, [Context.compData])
+
 
     function generateLifterRows(){
         return Context.compData.lifters.map(lifter => <LifterDataRow lifter={lifter} setFocusedLifter = {props.setFocusedLifter}/>)
     }
 
 
-
+    //cannot use state bc then context menu functions wont work.
     return (
         <>
             <table>

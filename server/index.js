@@ -25,6 +25,12 @@ const io = new Server(server,  {
 })
 //END SERVER INIT
 
+
+// roomName: {host: socketID, tabledata: data lol }
+let tableDataRooms = {
+
+}
+
 //socket gives the user, get its id with socket.id
 //TODO REFACTOR, REPLACE FOREACH WITH FOR LOOP IN ORDER FOR BREAK TO WORK
 io.on('connection', socket => {
@@ -34,12 +40,36 @@ io.on('connection', socket => {
     //RESULTS TABLE STREAMING
     socket.on('initResultsStreamingRoom', (data) => {
         socket.join(data.resultsStreamingID)
-        console.log('Started Room:', data.streamingRoomID)
+
+        tableDataRooms[data.resultsStreamingID] = {
+            host: socket.id,
+            tableData: data.tableData
+        }
+
+        console.log(tableDataRooms)
+
+        console.log('Started Room:', data.resultsStreamingID)
     })
 
-    socket.on('joinResultsStreamingRoom', (data) => {
-        socket.join(data.resultsStreamingID)
+    socket.on('joinResultsStreamingRoom', (resultsStreamingID, callback) => {
+        console.log('Spectator joined room:', resultsStreamingID)
+        socket.join(resultsStreamingID)
+
+        callback(tableDataRooms[resultsStreamingID])
     })
+
+    socket.on('hostUpdateTableData', (data) => {
+        tableDataRooms[data.resultsStreamingID].tableData = data.newTableData
+
+        socket.in(data.resultsStreamingID).emit('tableDataUpdated', {newTableData: data.newTableData})
+    })
+    //Store the table on the server, every change we make after we're connected, the server will be updating its own table too, when a user joins, since the server has a copy of it, we'll just send it to them
+
+
+
+
+
+
 
 
     //DEBUG
