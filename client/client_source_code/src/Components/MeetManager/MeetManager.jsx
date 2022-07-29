@@ -8,14 +8,6 @@ import io from 'socket.io-client'
 export default function MeetManager (){
 
     const [focusedLifter, setFocusedLifter] = useState("")
-    const [currentPlatform, setCurrentPlatform] = useState(-1)
-    const [judgeLightsRoomID, setJudgeLightsRoomID] = useState("")
-    const [resultsStreamingID, setResultsStreamingID] = useState("")
-    const [errorMsgStreaming, setErrorMsgStreaming] = useState("")
-    const [errorMsgLights, setErrorMsgLights] = useState("")
-    const [isLightsConnected, setIsLightsConnected] = useState(false)
-    const [isStreamingConnected, setIsStreamingConnected] = useState(false)
-    const [lights, setLights] = useState({refOne: LIFT_NOT_ATTEMPTED, refTwo: LIFT_NOT_ATTEMPTED, refThree: LIFT_NOT_ATTEMPTED})
 
     //TODO Move into hook/utils?
     function setLight(refNum, newLightState){
@@ -41,31 +33,6 @@ export default function MeetManager (){
     function getPotentialHighlight(buttonNum){
         return currentPlatform === buttonNum ? highlight : {}
     }
-
-    //REDO move this into the table itself 
-    function startStreamingSocket(){
-        if(!isStreamingConnected){
-            StreamingSocketRef.current = io.connect("http://localhost:3001")
-            setIsStreamingConnected(true)
-        }
-    }
-
-    //TODO This could actually be a hook :thonk:
-    function startLightsSocket(){
-        if(!isLightsConnected){
-            LightSocketRef.current = io.connect("http://localhost:3001")
-            LightSocketRef.current.emit('joinRoom', {judgeID: SPECTATOR, username: SPECTATOR, roomID: judgeLightsRoomID})
-
-            LightSocketRef.current.on('receiveLightFromServer', (data) => {
-                setLight(data.judgeID, data.newLightState)
-                console.log(lights)
-            })
-
-            setIsLightsConnected(true)
-        }
-    }
-
-
 
 
     return (
@@ -100,3 +67,22 @@ export default function MeetManager (){
 // <AddLifterButton/>
 // <DownloadDataButton/>
 // </> 
+
+
+<>
+{/* {errorMsgLights && <h3>{errorMsgLights}</h3>}
+{errorMsgStreaming && <h3>{errorMsgStreaming}</h3>} */}
+
+<div className = "table-nav">
+    <div className = "table-nav-judge-lights-container">
+        <div className="table-nav-judge-light">1</div>
+        <div className="table-nav-judge-light">2</div>
+        <div className="table-nav-judge-light">3</div>
+    </div>
+    
+    <p className = "table-nav-txt">Current Lifter: {focusedLifter.name ? focusedLifter.name : "N/A"} </p>
+</div>
+{/* <br/> */}
+{/* {errorMsgLights && <h3>{errorMsgLights}</h3>}
+{errorMsgStreaming && <h3>{errorMsgStreaming}</h3>} */}
+</>

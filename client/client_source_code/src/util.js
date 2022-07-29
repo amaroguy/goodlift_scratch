@@ -14,3 +14,9 @@ export const ATTEMPT_THREE = "attemptThree"
 export const SQUAT = "squat"
 export const BENCH = "bench"
 export const DEADLIFT = "deadlift"
+
+export const TABLE_HEADINGS = ['','Name','Weight','Squat', 'Bench', 'Deadlift']
+export const HEADING_SPANS = [1,1,1,3,3,3]
+
+
+export const SOCKET_URL = "http://localhost:3001"

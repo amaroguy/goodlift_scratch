@@ -7,10 +7,10 @@ import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED, ATTEMPT_ONE, ATTEMPT_TWO, ATTEM
 
 //TODO Make more dynamic
 
-function LifterDataRow({lifter, setFocusedLifter}) {
+function LifterDataRow({lifter, setFocusedLifterID}) {
 //Set style based on lift status 
 
-    const { setAttempt, setName, setWeight, setAttemptStatus} = React.useContext(LifterContext)
+    const { setAttempt, setName, setWeight, setAttemptStatus, setDisplayedLift} = React.useContext(LifterContext)
 
     //sus variables names, change this.
     const {squat, bench, deadlift} = lifter.lifts
@@ -18,7 +18,6 @@ function LifterDataRow({lifter, setFocusedLifter}) {
     
 
     //REFS FOR RIGHT CLICK MENUS 
-
     //CONTEXT TABLE REFS FOR SQUAT ATTEMPT TABLE ITEMS
     const squatAttemptOneRef = useRef(null)
     const squatAttemptTwoRef = useRef(null)
@@ -73,7 +72,7 @@ function LifterDataRow({lifter, setFocusedLifter}) {
     return (
         <tr>
             <td>
-                <button onClick = {() => setFocusedLifter(lifter)} style = {{width: "20px"}}> Y </button>
+                <button onClick = {() => setFocusedLifterID(lifter.id)} style = {{width: "20px"}}> Y </button>
             </td>
             <td>
                 <input type = "text" value = {lifter.name} onChange = {(event) => {setName(lifter.id, event.target.value)}}/>
@@ -84,6 +83,7 @@ function LifterDataRow({lifter, setFocusedLifter}) {
             <td ref = {squatAttemptOneRef} style={getLightStyle(squat.attemptOne.status)} >
                 <input type = "text" className = "lift-entry" value = {squat.attemptOne.weight} onChange={(event) => {setAttempt(lifter.id, SQUAT, ATTEMPT_ONE, event.target.value )}} />
                 <LifterTableContextMenu posX = {squatOneState.x} posY={squatOneState.y} isShown={squatOneState.isMenuShown} >
+                    <li className="context-menu-item" onClick={() => setDisplayedLift(lifter.id, SQUAT, ATTEMPT_ONE)}> Display Lift </li>
                     <li className="context-menu-item" onClick={() => setAttemptStatus(lifter.id, SQUAT, ATTEMPT_ONE, GOOD_LIFT)}> Good Lift </li>
                     <li className="context-menu-item" onClick={() => setAttemptStatus(lifter.id, SQUAT, ATTEMPT_ONE, NO_LIFT)}> No Lift </li>
                     <li className="context-menu-item" onClick={() => setAttemptStatus(lifter.id, SQUAT, ATTEMPT_ONE, LIFT_NOT_ATTEMPTED)}> Not Done </li>

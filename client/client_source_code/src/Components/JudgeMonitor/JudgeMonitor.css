@@ -1,0 +1,33 @@
+.jm-container{
+    width: 100%;
+    display: grid;
+    grid-template: 
+        'lifter-info plate-loading' 
+        'lights lights'
+        'table table';
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    align-items: center;
+    justify-items: center;
+}
+
+.jm-lifter-info{
+    grid-area: lifter-info;
+    background-color: lightblue;
+}
+
+.jm-plate-loading{
+    grid-area: plate-loading;
+    background-color: pink;
+}
+
+.jm-table{
+    grid-area: table;
+    background-color: lawngreen;
+    transform: scale(1.4)
+}
+
+.jm-judge-lights{
+    grid-area: lights;
+    background-color: violet
+}

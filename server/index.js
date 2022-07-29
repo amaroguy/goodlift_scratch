@@ -4,7 +4,6 @@ const http = require('http')
 const {Server} = require('socket.io')
 const cors = require('cors')
 const { SocketAddress } = require('net')
-const { verify } = require('crypto')
 //END IMPORTS
 
 
@@ -31,6 +30,10 @@ let tableDataRooms = {
 
 }
 
+let lightRooms = {
+
+}
+
 //socket gives the user, get its id with socket.id
 //TODO REFACTOR, REPLACE FOREACH WITH FOR LOOP IN ORDER FOR BREAK TO WORK
 io.on('connection', socket => {
@@ -46,25 +49,86 @@ io.on('connection', socket => {
             tableData: data.tableData
         }
 
+        //toupper the usernames 
+        lightRooms[data.resultsStreamingID] = {
+            host: socket.id,
+            lights: {
+                judgeLeft: "NOT ATTEMPTED",
+                judgeMiddle: "NOT ATTEMPTED",
+                judgeRight: "NOT ATTEMPTED"
+            },
+            allowedUsernames: [],
+            usersJoined: []
+        }
+        //check if usersJoined < 3
+        
         console.log(tableDataRooms)
+        console.log(lightRooms)
 
-        console.log('Started Room:', data.resultsStreamingID)
+        console.log('Started Rooms:', data.resultsStreamingID) 
     })
 
     socket.on('joinResultsStreamingRoom', (resultsStreamingID, callback) => {
         console.log('Spectator joined room:', resultsStreamingID)
         socket.join(resultsStreamingID)
 
-        callback(tableDataRooms[resultsStreamingID])
+        callback(tableDataRooms[resultsStreamingID])  
     })
 
+    //tabledata === compdata
     socket.on('hostUpdateTableData', (data) => {
         tableDataRooms[data.resultsStreamingID].tableData = data.newTableData
-
+        console.log("Host updated the table data to:", data.newTableData )
         socket.in(data.resultsStreamingID).emit('tableDataUpdated', {newTableData: data.newTableData})
     })
-    //Store the table on the server, every change we make after we're connected, the server will be updating its own table too, when a user joins, since the server has a copy of it, we'll just send it to them
 
+    socket.on('joinJudgeRoom', ({username, judgeRole, resultsStreamingID}) => {
+        //TODO ADD VERIFICATION
+        if(!(username && judgeRole && resultsStreamingID)){
+            console.log("CRITICAL ERROR: INVALID PARAMETERS IN JOINJUDGEROOM") 
+        }
+
+        console.log(lightRooms)
+        console.log(lightRooms.hasOwnProperty(resultsStreamingID))
+
+        if(!lightRooms.hasOwnProperty(resultsStreamingID)){
+            socket.emit('forceDisconnect', {msg: "This room does not exist!"}) 
+            socket.disconnect()
+        }
+
+        socket.join(resultsStreamingID)
+
+        console.log(`Joined room with these stats
+            {
+                username: ${username}
+                judgeRole: ${judgeRole}
+                resultsStreamingID: ${resultsStreamingID} 
+            }
+        `)
+
+    })
+
+    socket.on('fetchLights', (resultsStreamingID, callback) => {
+        callback(lightRooms[resultsStreamingID].lights)
+    })
+
+    socket.on('changeLight', ({resultsStreamingID, judgeRole, lightStatus}) => {
+ 
+        console.log(lightRooms[resultsStreamingID].lights) 
+
+        //edit lights server side
+        lightRooms[resultsStreamingID].lights = {
+            ...lightRooms[resultsStreamingID].lights,
+            [judgeRole]: lightStatus
+        }
+
+        //sync new changes with refs
+        socket.in(resultsStreamingID).emit('syncLights', {lights: lightRooms[resultsStreamingID].lights})
+        socket.emit('syncLights', {lights: lightRooms[resultsStreamingID].lights})
+
+    }) 
+    //Store the table on the server, every change we make after we're connected, the server will be updating its own table too, when a user joins, since the server has a copy of it, we'll just send it to them
+  
 
 
 
@@ -73,8 +137,8 @@ io.on('connection', socket => {
 
 
     //DEBUG
-    socket.on('foo', (data) => {
-        socket.emit('bar', {msg: `I received the message "${data.msg}" from ${socket.id}`})
+    socket.on('foo', (callback) => { 
+        callback()
     })
 
 

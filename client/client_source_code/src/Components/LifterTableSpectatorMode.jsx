@@ -28,6 +28,7 @@ export default function LifterTableSpectatorMode(props) {
         StreamingSocket.emit('joinResultsStreamingRoom', resultsStreamingID, ({tableData}) => {setTableData(tableData)})
 
         StreamingSocket.on('tableDataUpdated', (data) => {
+            console.log(data)
             setTableData(data.newTableData)
         })
     }, [])
@@ -45,8 +46,6 @@ export default function LifterTableSpectatorMode(props) {
     function generateLifterRows(){
         return tableData.lifters.map(lifter => <LifterDataRow lifter={lifter} setFocusedLifter = {props.setFocusedLifter} spectate={true}/>)
     }
-
-
 
     return (
         <>

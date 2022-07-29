@@ -6,7 +6,7 @@ export default function RefConnectForm(){
     const [errorMsg, setErrorMsg] = useState("")
     const [username, setUsername] = useState("")
     const [roomID, setRoomID] = useState("")
-    const [judgeID, setJudgeID] = useState(0)
+    const [judgeID, setJudgeID] = useState("")
     const RRNavigate = useNavigate()
 
     const selectedStyle = {backgroundColor: "orange"}
