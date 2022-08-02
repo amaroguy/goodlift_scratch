@@ -9,7 +9,7 @@ export default function RefConnectForm(){
     const [judgeID, setJudgeID] = useState("")
     const RRNavigate = useNavigate()
 
-    const selectedStyle = {backgroundColor: "orange"}
+    const selectedStyle = {backgroundColor: "#E05265", color: "white"}
     const errorStyle = {
         color: "red",
         opacity: "70%"
@@ -31,7 +31,7 @@ export default function RefConnectForm(){
 
 
     return (
-        <>
+        <div className = "judge-login-form-container">
         
             <h2>Connect To A Judge Light Room</h2>
             { errorMsg !== "" && <h3 style = {errorStyle}>{errorMsg}</h3>}
@@ -39,11 +39,13 @@ export default function RefConnectForm(){
             <input type="text" placeholder= "Username" value= {username} onChange = {(e) => setUsername(e.target.value)} style = {{margin: "10px"}}/>
 
             <h2> Select Judge Role </h2> 
-            <button className = "judgeButtons" style = {judgeID === REF_SIDE_LEFT ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_SIDE_LEFT)}}> Left Side Judge </button>
-            <button className = "judgeButtons" style = {judgeID === REF_SIDE_RIGHT ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_SIDE_RIGHT)}}> Right Side Judge </button>
-            <button className = "judgeButtons" style = {judgeID === REF_MIDDLE ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_MIDDLE)}}> Front Judge </button>
+            <div className="judge-role-btn-container">
+                <button className = "judgeButtons" style = {judgeID === REF_SIDE_LEFT ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_SIDE_LEFT)}}> Left Side Judge </button>
+                <button className = "judgeButtons" style = {judgeID === REF_MIDDLE ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_MIDDLE)}}> Front Judge </button>
+                <button className = "judgeButtons" style = {judgeID === REF_SIDE_RIGHT ? selectedStyle : {}} onClick = {() => {setJudgeID(REF_SIDE_RIGHT)}}> Right Side Judge </button>
+            </div>
             <br/> 
-            <button onClick={logRefIn} style = {{backgroundColor: "salmon", marginTop: "20px"}}> Log In! </button>
-        </>
+            <button onClick={logRefIn} className="general-button" style = {{marginTop: "20px"}}> Log In! </button>
+        </div>
     )
 }

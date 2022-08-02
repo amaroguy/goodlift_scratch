@@ -61,7 +61,7 @@ export default function JudgeMonitorPlateLoading({weightsInfo, currentLiftWeight
 
             let classStr = plate.toString() + "kg"
 
-            return (<div className = {classStr}> </div>)
+            return (<div className = {classStr}> {classStr} </div>)
 
         })
     }
@@ -72,7 +72,7 @@ export default function JudgeMonitorPlateLoading({weightsInfo, currentLiftWeight
 
     return (
         <>
-            <div style = {{display: "flex", alignItems: "center"}}>
+            <div className = "plates-container"style = {{display: "flex", alignItems: "center"}}>
                 {platesToDisplay.length === 0 ? "This weight is not possibles" : generatePlates(platesToDisplay)}
             </div> 
         </>

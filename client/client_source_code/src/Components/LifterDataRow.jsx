@@ -3,14 +3,14 @@ import {LifterContext} from './LifterContext'
 import { useContextMenu, testArr } from '../hooks/useContextMenu'
 import LifterTableContextMenu from './LifterTableContextMenu'
 import ContextMenuLightButtons from './ContextMenuLightButtons'
-import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED, ATTEMPT_ONE, ATTEMPT_TWO, ATTEMPT_THREE, SQUAT, BENCH, DEADLIFT } from '../util'
+import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED, ATTEMPT_ONE, ATTEMPT_TWO, ATTEMPT_THREE, SQUAT, BENCH, DEADLIFT, CALCULATE_DOTS } from '../util'
 
 //TODO Make more dynamic
 
 function LifterDataRow({lifter, setFocusedLifterID}) {
 //Set style based on lift status 
 
-    const { setAttempt, setName, setWeight, setAttemptStatus, setDisplayedLift} = React.useContext(LifterContext)
+    const { setAttempt, setName, setWeight, setAttemptStatus, setDisplayedLift, setSex, setScore, deleteLifter} = React.useContext(LifterContext)
 
     //sus variables names, change this.
     const {squat, bench, deadlift} = lifter.lifts
@@ -42,12 +42,34 @@ function LifterDataRow({lifter, setFocusedLifterID}) {
     const deadliftTwoState = useContextMenu(deadliftAttemptTwoRef)
     const deadliftThreeState = useContextMenu(deadliftAttemptThreeRef)
 
+    //ETC
+    const deleteLifterRef = useRef(null)
+    const deleteLifterState = useContextMenu(deleteLifterRef)
 
-    useEffect(() => {
-        window.addEventListener('contextmenu', (e) => {
-            console.log(testArr)
-        })
-    })
+    //handle removing eventlisteners
+    function deleteRow(lifterID){
+        //have to handle unmounting the event listeners out here bc idk how else to do it lol
+        squatAttemptOneRef.current.removeEventListener('contextmenu', squatOneState.openContextMenu)
+        squatAttemptTwoRef.current.removeEventListener('contextmenu', squatTwoState.openContextMenu)
+        squatAttemptThreeRef.current.removeEventListener('contextmenu', squatThreeState.openContextMenu)
+        benchAttemptOneRef.current.removeEventListener('contextmenu', benchOneState.openContextMenu)
+        benchAttemptTwoRef.current.removeEventListener('contextmenu', benchTwoState.openContextMenu)
+        benchAttemptThreeRef.current.removeEventListener('contextmenu', benchThreeState.openContextMenu)
+        deadliftAttemptOneRef.current.removeEventListener('contextmenu', deadliftOneState.openContextMenu)
+        deadliftAttemptTwoRef.current.removeEventListener('contextmenu', deadliftTwoState.openContextMenu)
+        deadliftAttemptThreeRef.current.removeEventListener('contextmenu', deadliftThreeState.openContextMenu)
+        deleteLifterRef.current.removeEventListener('contextmenu', deleteLifterState.openContextMenu)
+        deadliftAttemptThreeRef.current.removeEventListener('contextmenu', () => console.log('this function dne'))
+
+        deleteLifter(lifterID)
+    }
+
+
+    // useEffect(() => {
+    //     window.addEventListener('contextmenu', (e) => {
+    //         console.log(testArr)
+    //     })
+    // })
 
     // function setAttempt(lifterID, lift, attemptNum, newWeight){
 
@@ -55,11 +77,11 @@ function LifterDataRow({lifter, setFocusedLifterID}) {
     function getLightStyle(result){
         switch(result){
             case GOOD_LIFT:
-                return {backgroundColor: "green"}
+                return {backgroundColor: "#76DE6D"}
             case NO_LIFT: 
-                return {backgroundColor: "red"}
+                return {backgroundColor: "#E05265"}
             case LIFT_NOT_ATTEMPTED:
-                return {backgroundColor: "lightgray"}
+                return {backgroundColor: "#D3DBDD"}
             default:
                 console.log('Invalid Lift Result Passed in, please contact the site owner')
         }
@@ -71,17 +93,24 @@ function LifterDataRow({lifter, setFocusedLifterID}) {
     //Pass the state into the LifterTableContextMenu
     return (
         <tr>
-            <td>
-                <button onClick = {() => setFocusedLifterID(lifter.id)} style = {{width: "20px"}}> Y </button>
-            </td>
-            <td>
-                <input type = "text" value = {lifter.name} onChange = {(event) => {setName(lifter.id, event.target.value)}}/>
+
+            <td ref = {deleteLifterRef}>
+                <input type = "text" className = "table-input" value = {lifter.name} onChange = {(event) => {setName(lifter.id, event.target.value)}}/>
+                <LifterTableContextMenu posX = {deleteLifterState.x} posY = {deleteLifterState.y} isShown= {deleteLifterState.isMenuShown}>
+                    <li className = "context-menu-item" onClick= {() => deleteRow(lifter.id)} > Delete From Table </li>
+                </LifterTableContextMenu>
             </td>    
             <td>
-                <input type = "text" value = {lifter.weightClass} onChange = {(event) => {setWeight(lifter.id, event.target.value)}}/>
+                <select name="sex" id="sex" value = {lifter.sex} onChange = {(e) => setSex(lifter.id, e.target.value)}>
+                    <option value="M">M</option>
+                    <option value="F">F</option>
+                </select>
             </td>    
-            <td ref = {squatAttemptOneRef} style={getLightStyle(squat.attemptOne.status)} >
-                <input type = "text" className = "lift-entry" value = {squat.attemptOne.weight} onChange={(event) => {setAttempt(lifter.id, SQUAT, ATTEMPT_ONE, event.target.value )}} />
+            <td>
+                <input type = "text" className = "table-input" value = {lifter.weightClass} onChange = {(event) => {setWeight(lifter.id, event.target.value)}}/>
+            </td>    
+            <td ref = {squatAttemptOneRef} className = "lift-entry-td" style={getLightStyle(squat.attemptOne.status)} >
+                <input type = "text" className = "lift-entry table-input" value = {squat.attemptOne.weight} onChange={(event) => {setAttempt(lifter.id, SQUAT, ATTEMPT_ONE, event.target.value )}} />
                 <LifterTableContextMenu posX = {squatOneState.x} posY={squatOneState.y} isShown={squatOneState.isMenuShown} >
                     <li className="context-menu-item" onClick={() => setDisplayedLift(lifter.id, SQUAT, ATTEMPT_ONE)}> Display Lift </li>
                     <li className="context-menu-item" onClick={() => setAttemptStatus(lifter.id, SQUAT, ATTEMPT_ONE, GOOD_LIFT)}> Good Lift </li>
@@ -89,54 +118,57 @@ function LifterDataRow({lifter, setFocusedLifterID}) {
                     <li className="context-menu-item" onClick={() => setAttemptStatus(lifter.id, SQUAT, ATTEMPT_ONE, LIFT_NOT_ATTEMPTED)}> Not Done </li>
                 </LifterTableContextMenu>
             </td>    
-            <td ref = {squatAttemptTwoRef} style={getLightStyle(squat.attemptTwo.status)}>
-                <input type = "text" className = "lift-entry" value = {squat.attemptTwo.weight} onChange={(event) => {setAttempt(lifter.id, SQUAT, ATTEMPT_TWO, event.target.value)}}/>
+            <td ref = {squatAttemptTwoRef} className = "lift-entry-td"  style={getLightStyle(squat.attemptTwo.status)}>
+                <input type = "text" className = "lift-entry table-input" value = {squat.attemptTwo.weight} onChange={(event) => {setAttempt(lifter.id, SQUAT, ATTEMPT_TWO, event.target.value)}}/>
                 <LifterTableContextMenu posX = {squatTwoState.x} posY={squatTwoState.y} isShown={squatTwoState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {SQUAT} attemptNum = {ATTEMPT_TWO}/>
                 </LifterTableContextMenu>
             </td>    
-            <td ref = {squatAttemptThreeRef} style={getLightStyle(squat.attemptThree.status)}>
-                <input type = "text" className = "lift-entry" value = {squat.attemptThree.weight} onChange={(event) => {setAttempt(lifter.id, SQUAT, ATTEMPT_THREE, event.target.value)}} />
+            <td ref = {squatAttemptThreeRef} className = "lift-entry-td"  style={getLightStyle(squat.attemptThree.status)}>
+                <input type = "text" className = "lift-entry table-input" value = {squat.attemptThree.weight} onChange={(event) => {setAttempt(lifter.id, SQUAT, ATTEMPT_THREE, event.target.value)}} />
                 <LifterTableContextMenu posX = {squatThreeState.x} posY={squatThreeState.y} isShown={squatThreeState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {SQUAT} attemptNum = {ATTEMPT_THREE}/>
                 </LifterTableContextMenu>
             </td>    
-            <td  ref = {benchAttemptOneRef} style={getLightStyle(bench.attemptOne.status)}>
-                <input type = "text" className = "lift-entry" value = {bench.attemptOne.weight} onChange={(event) => {setAttempt(lifter.id, BENCH, ATTEMPT_ONE, event.target.value)}} />
+            <td  ref = {benchAttemptOneRef} className = "lift-entry-td"  style={getLightStyle(bench.attemptOne.status)}>
+                <input type = "text" className = "lift-entry table-input" value = {bench.attemptOne.weight} onChange={(event) => {setAttempt(lifter.id, BENCH, ATTEMPT_ONE, event.target.value)}} />
                 <LifterTableContextMenu posX = {benchOneState.x} posY={benchOneState.y} isShown={benchOneState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {BENCH} attemptNum = {ATTEMPT_ONE}/>
                 </LifterTableContextMenu>
             </td>    
-            <td ref = {benchAttemptTwoRef} style={getLightStyle(bench.attemptTwo.status)}>
-                <input type = "text" className = "lift-entry" value = {bench.attemptTwo.weight} onChange={(event) => {setAttempt(lifter.id, BENCH, ATTEMPT_TWO, event.target.value)}} />
+            <td ref = {benchAttemptTwoRef} className = "lift-entry-td"  style={getLightStyle(bench.attemptTwo.status)}>
+                <input type = "text" className = "lift-entry table-input" value = {bench.attemptTwo.weight} onChange={(event) => {setAttempt(lifter.id, BENCH, ATTEMPT_TWO, event.target.value)}} />
                 <LifterTableContextMenu posX = {benchTwoState.x} posY={benchTwoState.y} isShown={benchTwoState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {BENCH} attemptNum = {ATTEMPT_TWO}/>
                 </LifterTableContextMenu>
             </td>    
-            <td ref = {benchAttemptThreeRef} style={getLightStyle(bench.attemptThree.status)}>
-                <input type = "text" className = "lift-entry" value = {bench.attemptThree.weight} onChange={(event) => {setAttempt(lifter.id, BENCH, ATTEMPT_THREE, event.target.value)}} />
+            <td ref = {benchAttemptThreeRef} className = "lift-entry-td"  style={getLightStyle(bench.attemptThree.status)}>
+                <input type = "text" className = "lift-entry table-input" value = {bench.attemptThree.weight} onChange={(event) => {setAttempt(lifter.id, BENCH, ATTEMPT_THREE, event.target.value)}} />
                 <LifterTableContextMenu posX = {benchThreeState.x} posY={benchThreeState.y} isShown={benchThreeState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {BENCH} attemptNum = {ATTEMPT_THREE}/>
                 </LifterTableContextMenu>
             </td>    
-            <td ref = {deadliftAttemptOneRef} style={getLightStyle(deadlift.attemptOne.status)}>
-                <input type = "text" className = "lift-entry" value = {deadlift.attemptOne.weight} onChange={(event) => {setAttempt(lifter.id, DEADLIFT, ATTEMPT_ONE, event.target.value)}} />
+            <td ref = {deadliftAttemptOneRef} className = "lift-entry-td"  style={getLightStyle(deadlift.attemptOne.status)}>
+                <input type = "text" className = "lift-entry table-input" value = {deadlift.attemptOne.weight} onChange={(event) => {setAttempt(lifter.id, DEADLIFT, ATTEMPT_ONE, event.target.value)}} />
                 <LifterTableContextMenu posX = {deadliftOneState.x} posY={deadliftOneState.y} isShown={deadliftOneState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {DEADLIFT} attemptNum = {ATTEMPT_ONE}/>
                 </LifterTableContextMenu>
             </td>    
-            <td ref = {deadliftAttemptTwoRef} style={getLightStyle(deadlift.attemptTwo.status)}>
-                <input type = "text" className = "lift-entry" value = {deadlift.attemptTwo.weight} onChange={(event) => {setAttempt(lifter.id, DEADLIFT, ATTEMPT_TWO, event.target.value)}} />
+            <td ref = {deadliftAttemptTwoRef} className = "lift-entry-td"  style={getLightStyle(deadlift.attemptTwo.status)}>
+                <input type = "text" className = "lift-entry table-input" value = {deadlift.attemptTwo.weight} onChange={(event) => {setAttempt(lifter.id, DEADLIFT, ATTEMPT_TWO, event.target.value)}} />
                 <LifterTableContextMenu posX = {deadliftTwoState.x} posY={deadliftTwoState.y} isShown={deadliftTwoState.isMenuShown}>
                 <ContextMenuLightButtons lifterID = {lifter.id} lift = {DEADLIFT} attemptNum = {ATTEMPT_TWO}/>
                 </LifterTableContextMenu>
             </td>    
-            <td ref = {deadliftAttemptThreeRef} style={getLightStyle(deadlift.attemptThree.status)}>
-                <input type = "text" className = "lift-entry" value = {deadlift.attemptThree.weight} onChange={(event) => {setAttempt(lifter.id, DEADLIFT, ATTEMPT_THREE, event.target.value)}} />
+            <td ref = {deadliftAttemptThreeRef} className = "lift-entry-td"  style={getLightStyle(deadlift.attemptThree.status)}>
+                <input type = "text" className = "lift-entry table-input" value = {deadlift.attemptThree.weight} onChange={(event) => {setAttempt(lifter.id, DEADLIFT, ATTEMPT_THREE, event.target.value)}} />
                 <LifterTableContextMenu posX = {deadliftThreeState.x} posY={deadliftThreeState.y} isShown={deadliftThreeState.isMenuShown}>
                 <ContextMenuLightButtons lifterID = {lifter.id} lift = {DEADLIFT} attemptNum = {ATTEMPT_THREE}/>
                 </LifterTableContextMenu>
-            </td>    
+            </td>  
+            <td>
+                {setScore(lifter)}
+            </td>      
         </tr>
 
 

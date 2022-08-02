@@ -6,7 +6,7 @@ function AddLifterButton() {
     const {addBlankLifter} = useContext(LifterContext)
 
     return (
-        <button onClick={addBlankLifter}> Add A New Lifter </button>
+        <button className = "general-button" onClick={addBlankLifter}> Add A New Lifter </button>
     )
 }
 

@@ -1,3 +1,5 @@
+import { parse } from "uuid"
+
 export const GOOD_LIFT = "GOOD LIFT"
 export const NO_LIFT = "NO LIFT"
 export const LIFT_NOT_ATTEMPTED = "NOT ATTEMPTED"
@@ -15,8 +17,83 @@ export const SQUAT = "squat"
 export const BENCH = "bench"
 export const DEADLIFT = "deadlift"
 
-export const TABLE_HEADINGS = ['','Name','Weight','Squat', 'Bench', 'Deadlift']
-export const HEADING_SPANS = [1,1,1,3,3,3]
+export const TABLE_HEADINGS = ['Name','Weight','Squat', 'Bench', 'Deadlift', 'DOTS']
+export const HEADING_SPANS = [1,1,3,3,3,1]
 
+export const MALE = "M"
+export const FEMALE = "F"
+export const MIXED = "Mx"
+
+export function CALCULATE_DOTS(lifter){
+    
+    return lifter.sex === MALE ? mensDots(lifter) : womensDots(lifter)
+
+}
+
+function mensDots(lifter){
+    let total = getTotal(lifter)
+    console.log('DOTS CALC TOTAL ', total)
+    let bw = parseFloat(lifter.weightClass)
+
+    let termA = -0.000001093 * Math.pow(bw, 4)
+    let termB = 0.0007391293 * Math.pow(bw, 3)
+    let termC = -0.1918759221 * Math.pow(bw, 2)
+    let termD = 24.0900756 * bw
+    let termE = -307.75076 
+    let sumTerms = termA + termB + termC + termD + termE
+
+    let DOTS = total * (500 / sumTerms)
+
+    return DOTS.toFixed(2)
+}
+
+function womensDots(lifter){
+    let total = getTotal(lifter)
+    let bw = parseFloat(lifter.weightClass)
+
+    let termA = -0.0000010706  * Math.pow(bw, 4)
+    let termB = 0.0005158568 * Math.pow(bw, 3)
+    let termC = -0.1126655495 * Math.pow(bw, 2)
+    let termD = 13.6175032 * bw
+    let termE = -57.96288
+    let sumTerms = termA + termB + termC + termD + termE
+
+    let DOTS = total * (500 / sumTerms)
+
+    return DOTS.toFixed(2)
+}
+
+function getMaxLift(liftAttempts){
+
+    let goodLifts = liftAttempts.reduce((acc, liftAttempt) => {
+        if (liftAttempt.status === GOOD_LIFT){
+            console.log('pushed weight', liftAttempt.weight)
+            return [...acc, parseFloat(liftAttempt.weight)]
+        } 
+        return acc
+    }, [])
+
+    console.log('GOODLIFT ARRAY', goodLifts)
+    return goodLifts.length === 0 ? 0: Math.max(...goodLifts)
+}
+
+function getTotal(lifter){
+    
+    let {lifts} = lifter
+    let total = 0
+
+    console.log('object.values for squat', Object.values(lifter.lifts.squat))
+    let squatMax = getMaxLift(Object.values(lifter.lifts.squat))
+    let benchMax = getMaxLift(Object.values(lifter.lifts.bench))
+    let deadliftMax = getMaxLift(Object.values(lifter.lifts.deadlift))
+
+    console.log("SQUAT MAX:", squatMax)
+    console.log('BENCH MAX:', benchMax)
+    console.log('DEADLIFT MAX:', deadliftMax)
+    console.log(lifter.name, "'s total", (squatMax + benchMax + deadliftMax))
+
+    return (squatMax + benchMax + deadliftMax)
+
+}
 
 export const SOCKET_URL = "http://localhost:3001"

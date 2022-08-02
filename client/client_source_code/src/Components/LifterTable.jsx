@@ -6,10 +6,12 @@ import io from 'socket.io-client'
 import ContextMenuLightButtons from './ContextMenuLightButtons.jsx'
 import LifterTableNav from './LifterTableNav.jsx'
 import { useEffect } from 'react'
+import AddLifterButton from './AddLifterButton.jsx'
 
 //IF YOU CHANGE THIS, ADD A NEW <TD> TO LIFTERDATAROW
-const TABLE_HEADINGS = ['','Name','Weight','Squat', 'Bench', 'Deadlift']
-const HEADING_SPANS = [1,1,1,3,3,3]
+//TURN THIS INTO A CONSTANT
+const TABLE_HEADINGS = ['Name', 'Sex', 'Weight','Squat', 'Bench', 'Deadlift', 'DOTS']
+const HEADING_SPANS = [1,1,1,3,3,3,1]
 
 
 function LifterTable (props) {
@@ -53,7 +55,7 @@ function LifterTable (props) {
 
     //cannot use state bc then context menu functions wont work.
     return (
-        <>
+        <div className="table-container">
             <LifterTableNav/>
             <table>
                 <tbody>
@@ -66,11 +68,17 @@ function LifterTable (props) {
             
             { props.spectatorMode ?  <h2>Spectator Mode</h2> : 
                 <>
-                    <input type="text" placeholder="Streaming ID" value={resultsStreamingID} onChange = {(e) => setResultsStreamingID(e.target.value)}/> 
-                    <button className="btn" style = {{marginRight: "20px"}} onClick={() => startResultsStream()}> Start streaming competition </button>
-                </> 
+                    <div className = "streaming-options">
+                        <input className = "general-input" type="text" placeholder="Streaming ID" value={resultsStreamingID} onChange = {(e) => setResultsStreamingID(e.target.value)}/> 
+                        <button className="general-button" style = {{marginRight: "20px"}} onClick={() => startResultsStream()}> Start streaming competition </button>
+                    </div> 
+                    <div className = "streaming-options">
+                        <AddLifterButton/>
+                    </div> 
+
+                </>
             }
-        </>
+        </div>
         )
 }
 

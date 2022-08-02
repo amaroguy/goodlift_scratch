@@ -1,28 +1,34 @@
 :root {
     --table-rad: 5px;
+    --table-grid-color: #535353;
+    --table-background-color: #C9D0D2;
+    
 }
 
 /* Remove annoying gap, color entire table */
-table {
-    background-color: lightgray;
+table{
+    background-color: var(--table-background-color);
     border-radius: var(--table-rad);
     border-spacing: 0;
+    width:100%;
+    font-size:1.1rem;
 }
 
 /* Make grid */
 th, td {
-    border-bottom: 1px solid red;
-    border-right: 1px solid red;
-    padding: 10px;
+    border-bottom: 1px solid var(--table-grid-color);
+    border-right: 1px solid var(--table-grid-color);
+    padding: 12px 10px
 }
 
 th {
-    border-top: 1px solid red
+    border-top: 1px solid var(--table-grid-color);
 }
+
 
 table tbody tr td:first-child,
 table tbody tr th:first-child{
-    border-left: 1px solid red;
+    border-left: 1px solid var(--table-grid-color);
 }
 
 /* TABLE CORNER ROUNDING */
@@ -48,14 +54,33 @@ table tbody tr:first-child th:last-child {
     border-top-right-radius: var(--table-rad);
 }
 
-input[type="text"]{
-    background-color: lightgray;
+table input[type="text"]{
+    font-weight: bold;
+    background: rgba(0,0,0,0);
+    border: none;
+    border-bottom: 1px dashed rgba(0,0,0,0.5);
+    font-size: 1.2rem
 }
 
-input[type="text"]:focus{
-    background-color: pink;
+input[type="text"]:focus,
+input[type="text"]:active{
+    outline: none;
+    background: rgba(0,0,0,0.1);
 }
 
 .lift-entry {
-    width: 45px;
+    display: block;
+    margin: 0 auto;
+    width: 70%;
+}
+
+.table-container{
+    margin: 0 auto;
+    width: 95%;
+}
+
+.streaming-options{
+    width: max-content;
+    margin: 0 auto; 
+    margin-top: 15px
 }

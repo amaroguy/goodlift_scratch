@@ -43,6 +43,10 @@ export default function JudgeMonitor() {
 
         lightsSocket.emit('fetchLights', resultsStreamingID, (lights) => setJudgeLights(lights))
 
+        lightsSocket.on('hostDisconnect', ({msg}) => {
+            console.log(msg)
+        })
+
     }, [])
 
     if(!(compData && judgeLights)){
@@ -57,7 +61,7 @@ export default function JudgeMonitor() {
                 { compData ? <JudgeMonitorCurrentLifter tableData = {compData}/> : ""}
             </div>
             <div className = "jm-plate-loading"><JudgeMonitorPlateLoading weightsInfo = {compData.weightInfo} currentLiftWeight = {compData.displayedLift.attemptDetails.weight}/></div>
-            <div className = "jm-judge-lights"><JudgeMonitorLights lights = {judgeLights}/></div>
+            <div className = "jm-lights-container"><JudgeMonitorLights lights = {judgeLights}/></div>
             <div className = "jm-table">
                 { compData ? <JudgeMonitorTable tableData = {compData}/> : ""}
             </div>

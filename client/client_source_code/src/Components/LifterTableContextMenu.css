@@ -1,7 +1,7 @@
 .context-menu-container {
     position: absolute;
     border-radius: 10px;;
-    background-color: lightgray;
+    background-color: gainsboro;
     /* width: 100px;
     height: 100px; */
 }
@@ -22,9 +22,14 @@
     border-bottom-right-radius: 10px;
 }
 
+.context-menu-list{
+    border: 2px solid gray;
+    border-radius: 10px;
+}
+
 
 .context-menu-item:hover {
-    background-color:darkorange;
+    background-color: #F3F3F3;
     cursor: pointer;
 }
 

@@ -12,9 +12,9 @@ export default function ContextMenuLightButtons({lifterID, lift ,attemptNum}) {
 
     return (
     <>
-        <li className="context-menu-item" onClick={() => setAttemptStatus(lifterID, lift, attemptNum, GOOD_LIFT)}> Good Lift </li>
-        <li className="context-menu-item" onClick={() => setAttemptStatus(lifterID, lift, attemptNum, NO_LIFT)}> No Lift </li>
-        <li className="context-menu-item" onClick={() => setAttemptStatus(lifterID, lift, attemptNum, LIFT_NOT_ATTEMPTED)}> Not Done </li>
+        <li className="context-menu-item" onClick={() => setAttemptStatus(lifterID, lift, attemptNum, GOOD_LIFT)}> ⚪ Good Lift </li>
+        <li className="context-menu-item" onClick={() => setAttemptStatus(lifterID, lift, attemptNum, NO_LIFT)}> 🔴 No Lift </li>
+        <li className="context-menu-item" onClick={() => setAttemptStatus(lifterID, lift, attemptNum, LIFT_NOT_ATTEMPTED)}> 🔃 Reset Status </li>
     </>
     )
 }

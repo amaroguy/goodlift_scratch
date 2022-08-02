@@ -32,58 +32,61 @@
 
 
 const BLANK_LIFTER = {
-    id: -1,
+    id: 1,
     name: "",
+    sex: "",
     weightClass: "",
     lifts: {
         squat: {
             attemptOne: {
                 weight: "",
-                status: "",
-                lights: [-1,-1,-1]
+                status: "NOT ATTEMPTED",
+                lights: [1,1,1]
             },
             attemptTwo: {
                 weight: "",
-                status: "",
-                lights: [-1,-1,-1]
+                status: "NOT ATTEMPTED",
+                lights: [1,1,0]
             },
             attemptThree: {
                 weight: "",
-                status: "",
+                status: "NOT ATTEMPTED",
                 lights: [-1,-1,-1]
             }
         },
+
         bench: {
             attemptOne: {
                 weight: "",
-                status: "",
-                lights: [-1,-1,-1]
+                status: "NOT ATTEMPTED",
+                lights: [1,1,1]
             },
             attemptTwo: {
                 weight: "",
-                status: "",
-                lights: [-1,-1,-1]
+                status: "NOT ATTEMPTED",
+                lights: [1,1,0]
             },
             attemptThree: {
                 weight: "",
-                status: "",
+                status: "NOT ATTEMPTED",
                 lights: [-1,-1,-1]
             }
         },
+
         deadlift: {
             attemptOne: {
                 weight: "",
-                status: "",
-                lights: [-1,-1,-1]
+                status: "NOT ATTEMPTED",
+                lights: [1,1,1]
             },
             attemptTwo: {
                 weight: "",
-                status: "",
-                lights: [-1,-1,-1]
+                status: "NOT ATTEMPTED",
+                lights: [1,1,0]
             },
             attemptThree: {
                 weight: "",
-                status: "",
+                status: "NOT ATTEMPTED",
                 lights: [-1,-1,-1]
             }
         }
@@ -105,7 +108,9 @@ const TESTING_TABLE_DATA = {
         {
             id: 1,
             name: "Erick",
+            sex: "M", 
             weightClass: "100kg",
+            score: 0,
             lifts: {
                 squat: {
                     attemptOne: {
@@ -165,6 +170,7 @@ const TESTING_TABLE_DATA = {
         {
             id: 2, 
             name: "Paul",
+            sex: "F",
             weightClass: "300kg",
             lifts: {
                 squat: {
@@ -225,6 +231,7 @@ const TESTING_TABLE_DATA = {
         {
             name: "Omar",
             id: 3, 
+            sex: "M",
             weightClass: "-1kg",
             lifts: {
                 squat: {

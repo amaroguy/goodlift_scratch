@@ -27,11 +27,11 @@ export default function JudgeMonitorTable({tableData}) {
     function getLightStyle(result){
         switch(result){
             case GOOD_LIFT:
-                return {backgroundColor: "green"}
+                return {backgroundColor: "#76DE6D"}
             case NO_LIFT: 
-                return {backgroundColor: "red"}
+                return {backgroundColor: "#E05265"}
             case LIFT_NOT_ATTEMPTED:
-                return {backgroundColor: "lightgray"}
+                return {backgroundColor: "#D3DBDD"}
             default:
                 console.log('Invalid Lift Result Passed in, please contact the site owner')
         }
@@ -48,42 +48,42 @@ export default function JudgeMonitorTable({tableData}) {
                 {generateTableHeadings()}
             </tr>
             <tr>
-                <td>
-                    <button onClick = {() => {() => console.log('foo')}} style = {{width: "20px"}}> Y </button>
-                </td>
-                <td>
+                <td className="jm-td">
                     <input type = "text" value = {lifter.name} />
                 </td>    
-                <td>
-                    <input type = "text" value = {lifter.weightClass} />
+                <td className="jm-td">
+                    <input className = "weight-class-input" type = "text" value = {lifter.weightClass} />
                 </td>    
-                <td  style={getLightStyle(squat.attemptOne.status)} >
+                <td className="jm-td"  style={getLightStyle(squat.attemptOne.status)} >
                     <input type = "text" className = "lift-entry" value = {squat.attemptOne.weight} />
                 </td>    
-                <td  style={getLightStyle(squat.attemptTwo.status)}>
+                <td className="jm-td"  style={getLightStyle(squat.attemptTwo.status)}>
                     <input type = "text" className = "lift-entry" value = {squat.attemptTwo.weight} />
                 </td>    
-                <td  style={getLightStyle(squat.attemptThree.status)}>
+                <td className="jm-td"  style={getLightStyle(squat.attemptThree.status)}>
                     <input type = "text" className = "lift-entry" value = {squat.attemptThree.weight} />
                 </td>    
-                <td   style={getLightStyle(bench.attemptOne.status)}>
+                <td className="jm-td"   style={getLightStyle(bench.attemptOne.status)}>
                     <input type = "text" className = "lift-entry" value = {bench.attemptOne.weight} />
                 </td>    
-                <td  style={getLightStyle(bench.attemptTwo.status)}>
+                <td className="jm-td"  style={getLightStyle(bench.attemptTwo.status)}>
                     <input type = "text" className = "lift-entry" value = {bench.attemptTwo.weight}  />
                 </td>    
-                <td  style={getLightStyle(bench.attemptThree.status)}>
+                <td className="jm-td"  style={getLightStyle(bench.attemptThree.status)}>
                     <input type = "text" className = "lift-entry" value = {bench.attemptThree.weight}  />
                 </td>    
-                <td  style={getLightStyle(deadlift.attemptOne.status)}>
+                <td className="jm-td"  style={getLightStyle(deadlift.attemptOne.status)}>
                     <input type = "text" className = "lift-entry" value = {deadlift.attemptOne.weight} />
                 </td>    
-                <td  style={getLightStyle(deadlift.attemptTwo.status)}>
+                <td className="jm-td"  style={getLightStyle(deadlift.attemptTwo.status)}>
                     <input type = "text" className = "lift-entry" value = {deadlift.attemptTwo.weight}  />
                 </td>    
-                <td  style={getLightStyle(deadlift.attemptThree.status)}>
+                <td className="jm-td"  style={getLightStyle(deadlift.attemptThree.status)}>
                     <input type = "text" className = "lift-entry" value = {deadlift.attemptThree.weight}  />
-                </td>    
+                </td> 
+                <td className="jm-td">
+                    456
+                </td>
             </tr>
         </tbody>
     </table>

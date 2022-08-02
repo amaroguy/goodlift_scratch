@@ -50,6 +50,11 @@ export default function RefLights(props){
             setLight(data.judgeID, data.newLightState)
         })
 
+        socket.on('hostDisconnect', ({msg}) => {
+            console.log("HOST DISCONNECTED")
+            console.log(msg)
+        })
+
         //I cannot call socketSetLight since it is out of scope, using a ref declared outside
         //Learned that useEffect, even when just onMount, runs after the outer code is run 
         clientSocket.current = socket

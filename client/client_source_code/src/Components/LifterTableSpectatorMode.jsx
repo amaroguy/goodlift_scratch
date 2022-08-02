@@ -6,8 +6,8 @@ import io from 'socket.io-client'
 import { useParams } from 'react-router-dom'
 
 //IF YOU CHANGE THIS, ADD A NEW <TD> TO LIFTERDATAROW
-const TABLE_HEADINGS = ['','Name','Weight','Squat', 'Bench', 'Deadlift']
-const HEADING_SPANS = [1,1,1,3,3,3]
+const TABLE_HEADINGS = ['Name','Weight','Squat', 'Bench', 'Deadlift', 'DOTS']
+const HEADING_SPANS = [1,1,3,3,3,1]
 
 //LifterTable Spectator Mode?
 export default function LifterTableSpectatorMode(props) {
@@ -31,6 +31,11 @@ export default function LifterTableSpectatorMode(props) {
             console.log(data)
             setTableData(data.newTableData)
         })
+
+        StreamingSocket.on('hostDisconnect', ({msg}) => {
+            console.log(msg)
+        })
+
     }, [])
 
 
@@ -48,7 +53,8 @@ export default function LifterTableSpectatorMode(props) {
     }
 
     return (
-        <>
+        <div className="table-container spectate-container">
+            <h3 className = "center-header">You are spectating this competition!</h3>
             <table>
                 <tbody>
                     <tr>
@@ -57,8 +63,7 @@ export default function LifterTableSpectatorMode(props) {
                     {generateLifterRows()}
                 </tbody>
             </table>
-            <h3>You are spectating!</h3>
-        </>
+        </div>
         )
 
 }

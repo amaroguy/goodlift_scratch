@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import {v4 as uuid} from 'uuid'
 
 let testArr = new Set()
 
@@ -23,6 +24,8 @@ export function useContextMenu(reference){
     const [x, setX] = useState(0)
     const [y, setY] = useState(0)
     const [isMenuShown, setIsMenuShown] = useState(false)
+    const contextMenuID = uuid()
+    setIsMenuShown.menuID = contextMenuID
 
     function closeContextMenu(e){
         if(isMenuShown){
@@ -46,12 +49,14 @@ export function useContextMenu(reference){
     }
 
     useEffect(() => {
+        console.log('creating new event listeners!')
         document.addEventListener("click", closeContextMenu)
         reference.current.addEventListener("contextmenu", openContextMenu)
         
         return () => {
+            testArr = new Set([...testArr].filter(fn => fn.menuID !== contextMenuID))
             document.removeEventListener("click", closeContextMenu)
-            reference.current.removeEventListener("contextmenu", openContextMenu)
+
         }
     })
 
@@ -60,7 +65,7 @@ export function useContextMenu(reference){
     },[])
 
 
-    return {x, y, isMenuShown, closeContextMenu}
+    return {x, y, isMenuShown, closeContextMenu, openContextMenu}
 }
 
 export {testArr}

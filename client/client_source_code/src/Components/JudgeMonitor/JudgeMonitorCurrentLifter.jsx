@@ -28,7 +28,7 @@ export default function JudgeMonitorCurrentLifter({tableData}) {
                 break
         }
 
-        return `${lift} ${attemptNumber}: ${tableData.displayedLift.attemptDetails.weight}`
+        return `${lift} ${attemptNumber.toUpperCase()}: ${tableData.displayedLift.attemptDetails.weight}`
 
     }
 
@@ -36,8 +36,8 @@ export default function JudgeMonitorCurrentLifter({tableData}) {
         <>  {tableData.displayedLift.lifterID === -1 ? <h1>Lifter has not been focused yet! </h1> :
             <> 
                 <h1> {displayedLifter.name ? displayedLifter.name : "N/A"} </h1>
-                <h4> WEIGHT CLASS {displayedLifter.weightClass ? displayedLifter.weightClass : "N/A"} </h4>
-                <h2> CURRENT ATTEMPT {getLiftDetailsString()}</h2>    
+                <h1> WEIGHT CLASS: {displayedLifter.weightClass ? displayedLifter.weightClass : "N/A"} </h1>
+                <h1> {getLiftDetailsString()}</h1>    
             </>
             }
         </>

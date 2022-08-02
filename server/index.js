@@ -4,6 +4,7 @@ const http = require('http')
 const {Server} = require('socket.io')
 const cors = require('cors')
 const { SocketAddress } = require('net')
+const { table } = require('console')
 //END IMPORTS
 
 
@@ -61,6 +62,9 @@ io.on('connection', socket => {
             usersJoined: []
         }
         //check if usersJoined < 3
+
+        socket.isHost = true
+        socket.roomHosted = data.resultsStreamingID
         
         console.log(tableDataRooms)
         console.log(lightRooms)
@@ -127,6 +131,8 @@ io.on('connection', socket => {
         socket.emit('syncLights', {lights: lightRooms[resultsStreamingID].lights})
 
     }) 
+
+
     //Store the table on the server, every change we make after we're connected, the server will be updating its own table too, when a user joins, since the server has a copy of it, we'll just send it to them
   
 
@@ -214,6 +220,15 @@ io.on('connection', socket => {
 
     socket.on("disconnect", () => {
         console.log("User Disconnected", socket.id)
+
+        if(socket.isHost){
+            socket.in(socket.roomHosted).emit('hostDisconnect', {msg: "The host of this competition has disconnected, you will be redirected soon."})
+            io.socketsLeave(socket.roomHosted)
+            
+            delete tableDataRooms[socket.roomHosted]
+            delete lightRooms[socket.roomHosted]
+        }
+
     })
 
 })

@@ -11,16 +11,16 @@ export default function JudgeMonitorLights({lights}){
             case NO_LIFT:
                 return {backgroundColor: "red"}
             case LIFT_NOT_ATTEMPTED:
-                return {backgroundColor: "black"}
+                return {backgroundColor: "#6D6D6D"}
         }
     }
 
     return (
-        <div className="jm-lights-container">
-            <div className = "light" style = {lightStyle(lights.judgeLeft)}> </div> 
-            <div className = "light" style = {lightStyle(lights.judgeMiddle)}> </div> 
-            <div className = "light" style = {lightStyle(lights.judgeRight)}> </div> 
-        </div>
+        <>
+            <div className = "jm-light" style = {lightStyle(lights.judgeLeft)}> </div> 
+            <div className = "jm-light" style = {lightStyle(lights.judgeMiddle)}> </div> 
+            <div className = "jm-light" style = {lightStyle(lights.judgeRight)}> </div> 
+        </>
     )
 
 }

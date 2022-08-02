@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {TESTING_TABLE_DATA as COMP_DUMMY_DATA, BLANK_LIFTER} from './test_data/LifterTestData'
 import {v4 as uuid} from 'uuid'
 import {produce} from 'immer'
+import { CALCULATE_DOTS } from '../util'
 
 const LifterContext = React.createContext()
 
@@ -118,9 +119,54 @@ function LifterContextProvider(props){
         })
     }
 
+    function setSex(lifterID, newSex){
+        let index = compData.lifters.findIndex((lifter) => {
+            return lifter.id === lifterID
+        })
+
+        let newCompData = produce(compData, draft => {
+            draft.lifters[index]["sex"] = newSex
+        })
+
+        console.log(compData.lifters[index].name, "new sex is ", newSex)
+
+        setCompData(newCompData)
+    }
+
+    //Eventual refactor, pass in a function that calculates the score, like a wilks or dots func
+    function setScore(lifter){
+
+        let newScore = CALCULATE_DOTS(lifter)
+
+
+        let lifterID = lifter.id
+        let index = compData.lifters.findIndex((lifter) => {
+            return lifter.id === lifterID
+        })
+
+        let newCompData = produce(compData, draft => {
+            draft.lifters[index]["score"] = newScore
+        })
+
+                
+        setCompData(newCompData)
+        return newScore
+    }
+
+    function deleteLifter(lifterID){
+        
+        let newCompData = produce(compData, draft => {
+            draft.lifters = draft.lifters.filter(lifter => lifter.id !== lifterID)
+        })
+
+        setCompData(newCompData)
+    }
+
     return (
         <LifterContext.Provider 
-        value = {{setAttemptStatus, compData, setCompData, setAttempt, setName, setWeight, addBlankLifter, setFocusedLifterID, getLifterFromID, setDisplayedLift}}>
+        value = {{setAttemptStatus, compData, setCompData, setAttempt, setName, 
+        setWeight, addBlankLifter, setFocusedLifterID, getLifterFromID, setDisplayedLift, 
+        setSex, setScore, deleteLifter}}>
             {props.children}
         </LifterContext.Provider>
     )

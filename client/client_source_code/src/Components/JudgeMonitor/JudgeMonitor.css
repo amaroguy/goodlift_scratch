@@ -2,32 +2,97 @@
     width: 100%;
     display: grid;
     grid-template: 
-        'lifter-info plate-loading' 
-        'lights lights'
-        'table table';
+        'lights lights' 'lifter-info plate-loading' 'table table';
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 2fr 1fr;
     height: 100vh;
     align-items: center;
     justify-items: center;
 }
 
 .jm-lifter-info{
+    box-sizing: border-box;
     grid-area: lifter-info;
-    background-color: lightblue;
+    color: black;
+    border-radius: 10px;
+    padding: 10px 10px 10px 30px;
+    background-color: #929EA0;
+    width: 80%;
+    border: 10px solid black;
 }
 
 .jm-plate-loading{
     grid-area: plate-loading;
+    justify-self: start;
+    margin-left: 30%;
     background-color: pink;
+    transform: scale(4)
+}
+
+/* Bar sleeve and handle */
+.jm-plate-loading:before{
+    content:"";
+    position: absolute;
+    background-color: gray;
+    width: calc(100% + 60px);
+    height: 15px;
+    top: 50%;
+    right: -40px;
+    transform: translateY(-50%);
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(255,255,255,1) 50%,rgba(0,0,0,1) 100%);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    z-index: -1;
+
+}
+
+/* Bar sleeve things */
+.jm-plate-loading:after{
+    content: "";
+    position: absolute;
+    left: -10px;
+    width: 10px;
+    height: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: gray;
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(255,255,255,1) 50%,rgba(0,0,0,1) 100%);
 }
 
 .jm-table{
     grid-area: table;
     background-color: lawngreen;
-    transform: scale(1.4)
+    width: 98%;
 }
 
-.jm-judge-lights{
+.jm-lights-container {
     grid-area: lights;
-    background-color: violet
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.jm-td{
+    width: 7rem;
+}
+
+.jm-td input[type="text"]{
+    font-size: 1.45rem;
+}
+
+.jm-td-weight{
+    width: max-content;
+}
+
+.weight-class-input{
+    width:7rem;
+}
+
+.jm-light {
+    box-sizing: border-box;
+    background-color:  rgb(109,109,109);
+    border: 14px solid black;
+    aspect-ratio: 1 / 1;
+    width: 15%;
+    border-radius: 50%;
 }

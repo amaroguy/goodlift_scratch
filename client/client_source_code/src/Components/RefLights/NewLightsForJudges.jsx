@@ -47,6 +47,10 @@ export default function NewLights(props){
             setErrorMsg(msg)
         })
 
+        socket.on('hostDisconnect', ({msg}) => {
+            console.log(msg)
+        })
+
         socketRef.current.setLight = setLight
     }, [])
 
