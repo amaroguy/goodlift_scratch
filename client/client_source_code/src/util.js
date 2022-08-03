@@ -25,7 +25,7 @@ export const FEMALE = "F"
 export const MIXED = "Mx"
 
 export function CALCULATE_DOTS(lifter){
-    
+    console.log('calculating dots for', lifter.name)
     return lifter.sex === MALE ? mensDots(lifter) : womensDots(lifter)
 
 }
@@ -67,13 +67,11 @@ function getMaxLift(liftAttempts){
 
     let goodLifts = liftAttempts.reduce((acc, liftAttempt) => {
         if (liftAttempt.status === GOOD_LIFT){
-            console.log('pushed weight', liftAttempt.weight)
             return [...acc, parseFloat(liftAttempt.weight)]
         } 
         return acc
     }, [])
 
-    console.log('GOODLIFT ARRAY', goodLifts)
     return goodLifts.length === 0 ? 0: Math.max(...goodLifts)
 }
 
@@ -82,15 +80,10 @@ function getTotal(lifter){
     let {lifts} = lifter
     let total = 0
 
-    console.log('object.values for squat', Object.values(lifter.lifts.squat))
     let squatMax = getMaxLift(Object.values(lifter.lifts.squat))
     let benchMax = getMaxLift(Object.values(lifter.lifts.bench))
     let deadliftMax = getMaxLift(Object.values(lifter.lifts.deadlift))
 
-    console.log("SQUAT MAX:", squatMax)
-    console.log('BENCH MAX:', benchMax)
-    console.log('DEADLIFT MAX:', deadliftMax)
-    console.log(lifter.name, "'s total", (squatMax + benchMax + deadliftMax))
 
     return (squatMax + benchMax + deadliftMax)
 

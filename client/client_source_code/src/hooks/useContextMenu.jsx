@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {v4 as uuid} from 'uuid'
 
 let testArr = new Set()
-
+let closeLastMenuOpened = null
 /**
  * Takes in a reference object from useRef() hook
  * 
@@ -42,7 +42,13 @@ export function useContextMenu(reference){
 
     function openContextMenu(e) {
         e.preventDefault()
-        closeAllContextMenus()
+
+        if(closeLastMenuOpened){
+            closeLastMenuOpened()
+        }
+
+        closeLastMenuOpened = () => setIsMenuShown(false)
+
         setX(e.pageX)
         setY(e.pageY)
         setIsMenuShown(true)
