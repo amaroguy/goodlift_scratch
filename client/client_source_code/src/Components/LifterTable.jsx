@@ -7,6 +7,7 @@ import ContextMenuLightButtons from './ContextMenuLightButtons.jsx'
 import LifterTableNav from './LifterTableNav.jsx'
 import { useEffect } from 'react'
 import AddLifterButton from './AddLifterButton.jsx'
+import {v4 as uuid} from 'uuid'
 
 //IF YOU CHANGE THIS, ADD A NEW <TD> TO LIFTERDATAROW
 //TURN THIS INTO A CONSTANT
@@ -20,7 +21,6 @@ function LifterTable (props) {
     let StreamingSocketRef = useRef(null)
 
     const [resultsStreamingID, setResultsStreamingID] = useState("")
-    const [lifterRows, setLifterRows] = useState(generateLifterRows())
 
     function startResultsStream(){
 
@@ -35,7 +35,7 @@ function LifterTable (props) {
 
     function generateTableHeadings(){
         return TABLE_HEADINGS.map((title, index) => {
-            return <th colSpan={HEADING_SPANS[index]}> 
+            return <th  colSpan={HEADING_SPANS[index]}> 
                 {title} 
                 </th>
         })
@@ -49,9 +49,10 @@ function LifterTable (props) {
 
 
     function generateLifterRows(){
-        return Context.compData.lifters.map(lifter => <LifterDataRow lifter={lifter} setFocusedLifterID = {Context.setFocusedLifterID}/>)
+        return Context.compData.lifters.map(lifter => <LifterDataRow  lifter={lifter}/>)
     }
 
+    let rows = generateLifterRows()
 
     //cannot use state bc then context menu functions wont work.
     return (
@@ -62,7 +63,7 @@ function LifterTable (props) {
                     <tr>
                         {generateTableHeadings()}
                     </tr>
-                    {generateLifterRows()}
+                    {rows}
                 </tbody>
             </table>
             
@@ -78,6 +79,7 @@ function LifterTable (props) {
 
                 </>
             }
+            <h3> The number of lifters is {Context.compData.lifters.length} </h3>
         </div>
         )
 }

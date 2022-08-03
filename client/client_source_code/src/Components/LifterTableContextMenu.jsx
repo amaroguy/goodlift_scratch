@@ -10,11 +10,13 @@ export default function LifterTableContextMenu({posX, posY, isShown, children}) 
         display: isShown ? "flex" : "none"
     }
 
-    return(
-            <div className="context-menu-container" style = {menuDisplayStyle}>
-                <ul className = "context-menu-list">
-                    {children}
-                </ul>
-            </div>
+    return (
+        <div className="context-menu-container" style = {menuDisplayStyle}>
+            <ul className = "context-menu-list">
+                {children}
+            </ul>
+        </div>
     )
+
+
 }

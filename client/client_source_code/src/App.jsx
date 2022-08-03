@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import MeetManage from './Components/MeetManage'
 
 //import './App.css'
 
@@ -23,7 +24,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage/>} />
-        <Route path="manage" element = {<LifterTable/>} />
+        <Route path="manage" element = {<MeetManage/>} />
         <Route path="judge" element = {<RefConnectForm/>} /> 
         <Route path = "judge/join" element = {<NewLights/>}/>
         <Route path = "debug" element = {<h2>This used to be bar</h2>}/>

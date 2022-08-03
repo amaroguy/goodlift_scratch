@@ -4,10 +4,12 @@ import { useContextMenu, testArr } from '../hooks/useContextMenu'
 import LifterTableContextMenu from './LifterTableContextMenu'
 import ContextMenuLightButtons from './ContextMenuLightButtons'
 import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED, ATTEMPT_ONE, ATTEMPT_TWO, ATTEMPT_THREE, SQUAT, BENCH, DEADLIFT, CALCULATE_DOTS } from '../util'
+import {v4 as uuid} from 'uuid'
+import deepEqual from 'deep-equal'
 
 //TODO Make more dynamic
 
-function LifterDataRow({lifter, setFocusedLifterID}) {
+function LifterDataRow({lifter}) {
 //Set style based on lift status 
 
     const { setAttempt, setName, setWeight, setAttemptStatus, setDisplayedLift, setSex, setScore, deleteLifter} = React.useContext(LifterContext)
@@ -15,7 +17,7 @@ function LifterDataRow({lifter, setFocusedLifterID}) {
     //sus variables names, change this.
     const {squat, bench, deadlift} = lifter.lifts
 
-    
+    console.log('rendering the lifter', lifter.name)
 
     //REFS FOR RIGHT CLICK MENUS 
     //CONTEXT TABLE REFS FOR SQUAT ATTEMPT TABLE ITEMS
@@ -86,6 +88,9 @@ function LifterDataRow({lifter, setFocusedLifterID}) {
                 console.log('Invalid Lift Result Passed in, please contact the site owner')
         }
     }
+
+    //this might be a bug lol
+    let score = React.useMemo(() => setScore(lifter), [lifter])
 
     //right click on td, state has to be generated here?
     //setAttemptStatus(lifterID, lift, attemptNum, newStatus)
@@ -167,7 +172,7 @@ function LifterDataRow({lifter, setFocusedLifterID}) {
                 </LifterTableContextMenu>
             </td>  
             <td>
-                {setScore(lifter)}
+                {score}
             </td>      
         </tr>
 
@@ -175,4 +180,11 @@ function LifterDataRow({lifter, setFocusedLifterID}) {
     )
 }
 
-export default LifterDataRow
+export default React.memo(LifterDataRow, (lastProps, newProps) => { 
+    console.log('oh gooood im deeeeeping AAAAAAAAAAAAAAAAAAAAA')
+
+    console.log("lastprops", lastProps)
+    console.log('newprops', newProps)
+    console.log('deepresult', deepEqual(lastProps, newProps, {strict: true}))
+
+    return deepEqual(lastProps, newProps, {strict: true})})
