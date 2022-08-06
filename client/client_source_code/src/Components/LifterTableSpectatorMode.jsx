@@ -1,13 +1,13 @@
 import React, {useRef, useEffect, useState} from 'react'
-import { LifterContext } from './LifterContext.jsx'
-import LifterDataRow from './LifterDataRow.jsx'
 import './LifterTable.css'
 import io from 'socket.io-client'
 import { useParams } from 'react-router-dom'
+import { SOCKET_URL } from '../util.js'
+import LifterSpectateRow from './LifterSpectateRow.jsx'
 
 //IF YOU CHANGE THIS, ADD A NEW <TD> TO LIFTERDATAROW
-const TABLE_HEADINGS = ['Name','Weight','Squat', 'Bench', 'Deadlift', 'DOTS']
-const HEADING_SPANS = [1,1,3,3,3,1]
+const TABLE_HEADINGS = ['Name', 'Sex', 'Weight','Squat', 'Bench', 'Deadlift', 'DOTS']
+const HEADING_SPANS = [1,1,1,3,3,3,1]
 
 //LifterTable Spectator Mode?
 export default function LifterTableSpectatorMode(props) {
@@ -23,7 +23,7 @@ export default function LifterTableSpectatorMode(props) {
     }
 
     useEffect(() => {
-        const StreamingSocket = io.connect("http://localhost:3001")
+        const StreamingSocket = io.connect(SOCKET_URL)
 
         StreamingSocket.emit('joinResultsStreamingRoom', resultsStreamingID, ({tableData}) => {setTableData(tableData)})
 
@@ -49,7 +49,7 @@ export default function LifterTableSpectatorMode(props) {
 
 
     function generateLifterRows(){
-        return tableData.lifters.map(lifter => <LifterDataRow lifter={lifter} setFocusedLifter = {props.setFocusedLifter} spectate={true}/>)
+        return tableData.lifters.map(lifter => <LifterSpectateRow lifter = {lifter}/>)
     }
 
     return (

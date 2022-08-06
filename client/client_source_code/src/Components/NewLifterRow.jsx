@@ -1,10 +1,12 @@
 import {React, useRef, memo} from "react";
 import { useDispatch } from "react-redux";
-import {setLifterName, setSex, setWeightClass, setAttempt, setScore} from "../features/competitionData/competitionDataSlice";
+import {setLifterName, setSex, setWeightClass, setAttempt, setScore, setDisplayedLift} from "../features/competitionData/competitionDataSlice";
 import {SQUAT, BENCH, DEADLIFT, ATTEMPT_ONE, ATTEMPT_TWO, ATTEMPT_THREE, GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED} from '../util'
 import LifterTableContextMenu from "./LifterTableContextMenu";
 import ContextMenuLightButtons from "./ContextMenuLightButtons";
 import { useContextMenu } from '../hooks/useContextMenu'
+
+const FOCUS_LIFT = "Focus Lift"
 
 function NewLifterRow({lifter}) {
     console.log('rendering lifter row of', lifter.name)
@@ -101,6 +103,9 @@ function NewLifterRow({lifter}) {
 
                 <LifterTableContextMenu posX = {squatOneState.x} posY = {squatOneState.y} isShown = {squatOneState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {SQUAT} attemptNum = {ATTEMPT_ONE}/>
+                    <li className = "context-menu-item" onClick = {() => dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: SQUAT, attemptNum: ATTEMPT_ONE
+                    })) }> {FOCUS_LIFT} </li>
                 </LifterTableContextMenu>
 
             </td>
@@ -120,6 +125,9 @@ function NewLifterRow({lifter}) {
 
                 <LifterTableContextMenu poxX = {squatTwoState.x} posY = {squatTwoState.y} isShown = {squatTwoState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {SQUAT} attemptNum = {ATTEMPT_TWO}/>
+                    <li className = "context-menu-item" onClick = {() => dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: SQUAT, attemptNum: ATTEMPT_TWO
+                    }))}> {FOCUS_LIFT} </li>
                 </LifterTableContextMenu>
 
             </td>
@@ -138,6 +146,9 @@ function NewLifterRow({lifter}) {
 
                 <LifterTableContextMenu posX = {squatThreeState.x} posY = {squatThreeState.y} isShown = {squatThreeState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {SQUAT} attemptNum = {ATTEMPT_THREE} /> 
+                    <li className = "context-menu-item" onClick = {() => dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: SQUAT, attemptNum: ATTEMPT_THREE
+                    }))} > {FOCUS_LIFT} </li>
                 </LifterTableContextMenu>
 
             </td>
@@ -156,6 +167,9 @@ function NewLifterRow({lifter}) {
 
                 <LifterTableContextMenu posX = {benchOneState.x} posY = {benchOneState.y} isShown = {benchOneState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {BENCH} attemptNum = {ATTEMPT_ONE}/>
+                    <li className = "context-menu-item" onClick = {() => dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: BENCH, attemptNum: ATTEMPT_ONE
+                    }))}> {FOCUS_LIFT}</li>
                 </LifterTableContextMenu>
 
             </td>
@@ -174,6 +188,9 @@ function NewLifterRow({lifter}) {
 
                 <LifterTableContextMenu posX = {benchTwoState.x} posY = {benchTwoState.y} isShown = {benchTwoState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {BENCH} attemptNum = {ATTEMPT_TWO}/>
+                    <li className = "context-menu-item" onClick = {() => {dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: BENCH, attemptNum: ATTEMPT_TWO
+                    }))}}> {FOCUS_LIFT} </li>
                 </LifterTableContextMenu>
 
             </td>
@@ -192,6 +209,11 @@ function NewLifterRow({lifter}) {
                 
                 <LifterTableContextMenu posX = {benchThreeState.x} posY = {benchThreeState.y} isShown = {benchThreeState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {BENCH} attemptNum = {ATTEMPT_THREE}/>
+                    <li className = "context-menu-item" onClick = {() => {dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: BENCH, attemptNum: ATTEMPT_THREE
+                    }))}}>
+                        {FOCUS_LIFT}
+                    </li>
                 </LifterTableContextMenu>
 
 
@@ -212,6 +234,11 @@ function NewLifterRow({lifter}) {
 
                 <LifterTableContextMenu posX = {deadliftOneState.x} posY = {deadliftOneState.y} isShown = {deadliftOneState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {DEADLIFT} attemptNum = {ATTEMPT_ONE} /> 
+                    <li className = "context-menu-item" onClick = {() => {dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: DEADLIFT, attemptNum: ATTEMPT_ONE
+                    }))}}>
+                        {FOCUS_LIFT}
+                    </li>
                 </LifterTableContextMenu>
 
             </td>
@@ -230,6 +257,12 @@ function NewLifterRow({lifter}) {
 
                 <LifterTableContextMenu posX = {deadliftTwoState.x} posY = {deadliftTwoState.y} isShown = {deadliftTwoState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {DEADLIFT} attemptNum = {ATTEMPT_TWO} />
+                    <li className = "context-menu-item" onClick = {() => {dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: DEADLIFT, attemptNum: ATTEMPT_TWO
+                    }))}}>
+                        {FOCUS_LIFT}
+                    </li>
+
                 </LifterTableContextMenu>
 
             </td>
@@ -248,6 +281,11 @@ function NewLifterRow({lifter}) {
 
                 <LifterTableContextMenu posX = {deadliftThreeState.x} posY = {deadliftThreeState.y} isShown = {deadliftThreeState.isMenuShown}>
                     <ContextMenuLightButtons lifterID = {lifter.id} lift = {DEADLIFT} attemptNum = {ATTEMPT_THREE} /> 
+                    <li className = "context-menu-item" onClick = {() => {dispatch(setDisplayedLift({
+                        lifterID: lifter.id, lift: DEADLIFT, attemptNum: ATTEMPT_THREE
+                    }))}}>
+                        {FOCUS_LIFT}
+                    </li>
                 </LifterTableContextMenu>
 
             </td>

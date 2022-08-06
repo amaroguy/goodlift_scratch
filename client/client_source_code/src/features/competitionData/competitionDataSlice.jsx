@@ -7,8 +7,16 @@ const competitionDataSlice = createSlice({
     name: 'competitionData',
     initialState,
     reducers: {
-        setDisplayedLift: (state, action) => {
-            console.log('foo')
+        setDisplayedLift: (state, {payload}) => {
+            const {lifterID, lift, attemptNum} = payload
+
+            const lifter = state.lifters.find(lifter => lifter.id === lifterID)
+
+            state.displayedLift.lifterID = lifterID
+            state.displayedLift.attemptDetails.lift = lift
+            state.displayedLift.attemptDetails.attemptNum = attemptNum
+            state.displayedLift.attemptDetails.weight = lifter.lifts[lift][attemptNum]["weight"]
+            state.displayedLift.attemptDetails.status = lifter.lifts[lift][attemptNum]["status"]
         },
         setLifterName: (state , {payload}) => {
             const {lifterID, newName} = payload
