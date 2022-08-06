@@ -12,13 +12,14 @@ table{
     border-spacing: 0;
     width:100%;
     font-size:1.1rem;
+    overflow: scroll;
 }
 
 /* Make grid */
 th, td {
     border-bottom: 1px solid var(--table-grid-color);
     border-right: 1px solid var(--table-grid-color);
-    padding: 12px 10px
+    padding: 12px 10px;
 }
 
 th {
@@ -71,16 +72,37 @@ input[type="text"]:active{
 .lift-entry {
     display: block;
     margin: 0 auto;
-    width: 70%;
+    width: 90%;
 }
 
 .table-container{
     margin: 0 auto;
-    width: 95%;
+    width: 98%;
 }
 
 .streaming-options{
     width: max-content;
     margin: 0 auto; 
     margin-top: 15px
+}
+
+.weight-td{
+    max-width: 4em;
+}
+
+.weight-input {
+    width: 100%
+}
+
+@media (max-width: 1400px){
+
+
+    td, th{
+        font-size: 1rem;
+        padding: 9px 6px;
+    }
+
+    table input[type="text"]{
+        font-size:1.05rem;
+    }
 }

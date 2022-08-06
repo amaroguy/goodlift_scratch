@@ -4,7 +4,7 @@ import {setLifterName, setSex, setWeightClass, setAttempt, setScore, setDisplaye
 import {SQUAT, BENCH, DEADLIFT, ATTEMPT_ONE, ATTEMPT_TWO, ATTEMPT_THREE, GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED} from '../util'
 import LifterTableContextMenu from "./LifterTableContextMenu";
 import ContextMenuLightButtons from "./ContextMenuLightButtons";
-import { useContextMenu } from '../hooks/useContextMenu'
+import { useContextMenu } from '../hooks/useContextMenuOld'
 
 const FOCUS_LIFT = "Focus Lift"
 
@@ -58,6 +58,9 @@ function NewLifterRow({lifter}) {
     const deadliftTwoState = useContextMenu(deadliftAttemptTwoRef)
     const deadliftThreeState = useContextMenu(deadliftAttemptThreeRef)
 
+
+
+
     dispatch(setScore({lifterID: lifter.id}))
 
     return (
@@ -79,15 +82,17 @@ function NewLifterRow({lifter}) {
                     <option value = "F">F</option>
                 </select>
             </td>
-            <td>
+            <td className = "weight-td">
                 <input 
                 type="text"
+                className = "weight-input"
                 value={lifter.weightClass}
                 onChange = {(e) => dispatch(setWeightClass({lifterID: lifter.id, newWeightClass: e.target.value}))}
                 />
             </td>
             <td ref = {squatAttemptOneRef} className = "lift-entry-td" 
                 style = {getLightStyle(squat.attemptOne.status)}
+                onContextMenu = {(e) => squatOneState.openContextMenu(e)}
             >
                 <input 
                 type= "text" 
@@ -109,7 +114,11 @@ function NewLifterRow({lifter}) {
                 </LifterTableContextMenu>
 
             </td>
-            <td ref = {squatAttemptTwoRef} className = "lift-entry-td" style = {getLightStyle(squat.attemptTwo.status)}>
+            <td ref = {squatAttemptTwoRef} 
+            className = "lift-entry-td" 
+            style = {getLightStyle(squat.attemptTwo.status)}
+            onContextMenu = {(e) => squatTwoState.openContextMenu(e)}
+            >
 
                 <input 
                 type= "text" 
@@ -131,7 +140,10 @@ function NewLifterRow({lifter}) {
                 </LifterTableContextMenu>
 
             </td>
-            <td ref = {squatAttemptThreeRef} className = "lift-entry-td" style = {getLightStyle(squat.attemptThree.status)}>
+            <td ref = {squatAttemptThreeRef} 
+            className = "lift-entry-td" 
+            style = {getLightStyle(squat.attemptThree.status)}
+            onContextMenu = {(e) => squatThreeState.openContextMenu(e)}>
                 <input 
                 type= "text" 
                 className = "lift-entry table-input"
@@ -152,7 +164,10 @@ function NewLifterRow({lifter}) {
                 </LifterTableContextMenu>
 
             </td>
-            <td ref = {benchAttemptOneRef} className = "lift-entry-td" style = {getLightStyle(bench.attemptOne.status)}>
+            <td ref = {benchAttemptOneRef} 
+            className = "lift-entry-td" 
+            style = {getLightStyle(bench.attemptOne.status)}
+            onContextMenu = {(e) => benchOneState.openContextMenu(e)}>
                 <input 
                 type= "text" 
                 className = "lift-entry table-input"
@@ -173,7 +188,10 @@ function NewLifterRow({lifter}) {
                 </LifterTableContextMenu>
 
             </td>
-            <td ref = {benchAttemptTwoRef} className = "lift-entry-td" style = {getLightStyle(bench.attemptTwo.status)}>
+            <td ref = {benchAttemptTwoRef}
+                className = "lift-entry-td"
+                style = {getLightStyle(bench.attemptTwo.status)}
+                onContextMenu = {(e) => benchTwoState.openContextMenu(e)}>
                 <input 
                 type= "text" 
                 className = "lift-entry table-input"
@@ -194,7 +212,10 @@ function NewLifterRow({lifter}) {
                 </LifterTableContextMenu>
 
             </td>
-            <td ref = {benchAttemptThreeRef} className = "lift-entry-td" style = {getLightStyle(bench.attemptThree.status)}>
+            <td ref = {benchAttemptThreeRef} 
+            className = "lift-entry-td" 
+            style = {getLightStyle(bench.attemptThree.status)}
+            onContextMenu = {(e) => benchThreeState.openContextMenu(e)}>
                 <input 
                 type= "text" 
                 className = "lift-entry table-input"
@@ -219,7 +240,11 @@ function NewLifterRow({lifter}) {
 
 
             </td>
-            <td ref = {deadliftAttemptOneRef} className = "lift-entry-td" style = {getLightStyle(deadlift.attemptOne.status)}>
+            <td ref = {deadliftAttemptOneRef} 
+            className = "lift-entry-td" 
+            style = {getLightStyle(deadlift.attemptOne.status)}
+            onContextMenu = {(e) => deadliftOneState.openContextMenu(e)}
+            >
                 <input 
                 type= "text" 
                 className = "lift-entry table-input"
@@ -242,7 +267,11 @@ function NewLifterRow({lifter}) {
                 </LifterTableContextMenu>
 
             </td>
-            <td ref = {deadliftAttemptTwoRef} className = "lift-entry-td" style = {getLightStyle(deadlift.attemptTwo.status)}>
+            <td ref = {deadliftAttemptTwoRef} 
+            className = "lift-entry-td" 
+            style = {getLightStyle(deadlift.attemptTwo.status)}
+            onContextMenu = {(e) => deadliftTwoState.openContextMenu(e)}
+            >
                 <input 
                 type= "text" 
                 className = "lift-entry table-input"
@@ -266,7 +295,11 @@ function NewLifterRow({lifter}) {
                 </LifterTableContextMenu>
 
             </td>
-            <td ref = {deadliftAttemptThreeRef} className = "lift-entry-td" style = {getLightStyle(deadlift.attemptThree.status)}>
+            <td ref = {deadliftAttemptThreeRef} 
+            className = "lift-entry-td" 
+            style = {getLightStyle(deadlift.attemptThree.status)}
+            onContextMenu = {(e) => deadliftThreeState.openContextMenu(e)}
+            >
                 <input 
                 type= "text" 
                 className = "lift-entry table-input"

@@ -1,6 +1,6 @@
 import React, {useContext, useRef, useEffect} from 'react'
 import {LifterContext} from './LifterContext'
-import { useContextMenu, testArr } from '../hooks/useContextMenu'
+import { useContextMenu, testArr } from '../hooks/useContextMenuOld'
 import LifterTableContextMenu from './LifterTableContextMenu'
 import ContextMenuLightButtons from './ContextMenuLightButtons'
 import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED, ATTEMPT_ONE, ATTEMPT_TWO, ATTEMPT_THREE, SQUAT, BENCH, DEADLIFT, CALCULATE_DOTS } from '../util'
