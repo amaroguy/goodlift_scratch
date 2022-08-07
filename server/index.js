@@ -9,7 +9,7 @@ const { table } = require('console')
 
 const PORT = process.env.PORT || 3001; 
 
-
+const TEST = "FOO"
 
 const app = express()
 app.use(cors())
