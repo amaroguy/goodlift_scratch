@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, HashRouter} from 'react-router-dom'
 import MeetManage from './Components/MeetManage'
 
 //import './App.css'
@@ -24,7 +24,7 @@ import {store} from './store'
 function App() {
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<HomePage/>} />
         <Route path="manage" element = {<Provider store = {store}><MeetManage/></Provider>} />
@@ -34,7 +34,7 @@ function App() {
         <Route path = "spectate/:resultsStreamingID" element = {<LifterTableSpectatorMode/>} />
         <Route path = "judgemonitor/:resultsStreamingID" element = {<JudgeMonitor/>} /> 
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
   
 }

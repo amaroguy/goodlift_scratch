@@ -89,4 +89,4 @@ function getTotal(lifter){
 
 }
 
-export const SOCKET_URL = "http://localhost:3001"
+export const SOCKET_URL = "https://protected-chamber-15043.herokuapp.com/"

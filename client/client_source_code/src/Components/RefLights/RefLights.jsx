@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import './RefLights.css'
 import io from 'socket.io-client'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED } from '../../util'
+import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED, SOCKET_URL } from '../../util'
 import { REF_SIDE_LEFT, REF_SIDE_RIGHT, REF_MIDDLE } from '../../util'
 
 
@@ -33,7 +33,7 @@ export default function RefLights(props){
         
         
     useEffect( () => {
-        const socket =  io.connect("http://localhost:3001")
+        const socket =  io.connect(SOCKET_URL)
         socket.emit('joinRoom', {username, roomID: qsRoomID, judgeID: qsJudgeID})
         
         socket.on('connectionDenied', (data) => {

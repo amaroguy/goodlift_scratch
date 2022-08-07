@@ -8,6 +8,7 @@ import LifterTableNav from './LifterTableNav.jsx'
 import { useEffect } from 'react'
 import AddLifterButton from './AddLifterButton.jsx'
 import {v4 as uuid} from 'uuid'
+import { SOCKET_URL } from '../util.js'
 
 //IF YOU CHANGE THIS, ADD A NEW <TD> TO LIFTERDATAROW
 //TURN THIS INTO A CONSTANT
@@ -29,7 +30,7 @@ function LifterTable (props) {
             return
         } 
 
-        StreamingSocketRef.current = io.connect("http://localhost:3001")
+        StreamingSocketRef.current = io.connect(SOCKET_URL)
         StreamingSocketRef.current.emit("initResultsStreamingRoom", {tableData: Context.compData, resultsStreamingID})
     }
 
