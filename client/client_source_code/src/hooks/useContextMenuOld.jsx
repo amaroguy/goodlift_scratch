@@ -21,7 +21,7 @@ let closeLastMenuOpened = null
  */
 let usingContextMenu = false
 
-export function useContextMenu(reference){
+function useContextMenu(reference){
 
     const [x, setX] = useState(0)
     const [y, setY] = useState(0)
@@ -64,7 +64,6 @@ export function useContextMenu(reference){
     return {x, y, isMenuShown, closeContextMenu, openContextMenu}
 }
 
-export {testArr}
 //props
 // ref -> reference to the item that will be clicked
 //

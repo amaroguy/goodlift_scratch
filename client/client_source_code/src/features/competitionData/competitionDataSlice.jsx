@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import {TESTING_TABLE_DATA as initialState, BLANK_LIFTER} from "../../Components/test_data/LifterTestData"
+// import {TESTING_TABLE_DATA as initialState, BLANK_LIFTER} from "../../Components/test_data/LifterTestData"
+import {INIT_DATA as initialState, BLANK_LIFTER} from "../../Components/test_data/LifterTestData"
 import { CALCULATE_DOTS } from "../../util"
 import { v4 as uuid } from "uuid"
 
@@ -27,8 +28,18 @@ const competitionDataSlice = createSlice({
         },
         setAttempt: (state, {payload}) => {
             const {lifterID, lift, attemptNum, newWeight} = payload
-
             let lifter = state.lifters.find(lifter => lifterID === lifter.id)
+
+            if(state.displayedLift.lifterID === lifterID &&
+                state.displayedLift.attemptDetails.lift === lift && 
+                state.displayedLift.attemptDetails.attemptNum === attemptNum){
+
+                    console.log(`foo, ${newWeight}` )
+                state.displayedLift.attemptDetails.lift = lift
+                state.displayedLift.attemptDetails.attemptNum = attemptNum
+                state.displayedLift.attemptDetails.weight = newWeight
+            }
+
             lifter.lifts[lift][attemptNum].weight = newWeight
 
         },
@@ -56,8 +67,9 @@ const competitionDataSlice = createSlice({
             lifter.score = score
         },
         deleteLifter: (state, {payload}) => {
-            //lifterID
-            console.log('foo')
+            let {lifterID} = payload
+            state.lifters = state.lifters.filter(lifter => lifter.id !== lifterID)
+
         },
         addDefaultLifter: (state) => {
             let newLifter = {...BLANK_LIFTER, id: uuid()}

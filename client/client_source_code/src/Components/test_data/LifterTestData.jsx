@@ -314,6 +314,44 @@ const TESTING_TABLE_DATA = {
     }    
 }
 
+export const INIT_DATA = {
+    displayedLift: {
+        lifterID: -1,
+
+        attemptDetails: {
+            lift: "FOO",
+            attemptNum: "FOO",
+            weight: "1kg",
+            status: "NOT ATTEMPTED"
+        }
+    },
+    lifters: [],
+    competitionDetails: {
+        location: "California",
+        competition_id: 10,
+        status: "Complete"
+    },
+    weightInfo:  {
+        unit: "KG",
+        barAndClipsWeight: 20,
+        platesAvailable: {
+            25: 10,
+            20: 10,
+            15: 10,
+            10: 10,
+            5: 10,
+            2.5: 10,
+            1: 10,
+            0.75: 10,
+            0.5: 10,
+            0.25: 10,
+            0.125: 10
+        }
+    }    
+}
+
+
+
 const platesAvailableTemplateKG = {
     unit: "KG",
     barAndClipsWeight: 20,

@@ -11,6 +11,7 @@ const HEADING_SPANS = [1,1,1,3,3,3,1]
 export default function NewLifterTable() {
 
     const competitionData = useSelector((state) => state.competitionData)
+    const dispatch = useDispatch()
 
     let displayedLifterName = competitionData.displayedLift.lifterID === -1 ? 'N/A' :
         competitionData.lifters.find(lifter => competitionData.displayedLift.lifterID === lifter.id).name
@@ -19,9 +20,12 @@ export default function NewLifterTable() {
         return TABLE_HEADINGS.map((hdr, idx) => <th colSpan = {HEADING_SPANS[idx]} > {hdr} </th>)
     }
 
+    const zaza = {height: "300px", width: "300px"}
+
     function generateTableRows() {
         return competitionData.lifters.map(lifter => <NewLifterRow lifter = {lifter}/>)
     }
+
 
     return <>
         <LifterTableNav displayedLifterName={displayedLifterName} />
@@ -33,6 +37,7 @@ export default function NewLifterTable() {
                 {generateTableRows()}
             </tbody>
         </table>
+        <button onClick = {() => dispatch(addDefaultLifter())} className = "general-button"> Add a new lifter </button>
     </>
 
 

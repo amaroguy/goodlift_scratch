@@ -1,7 +1,7 @@
 import React from 'react'
 import { GOOD_LIFT, NO_LIFT, LIFT_NOT_ATTEMPTED } from '../util'
 import { useDispatch } from 'react-redux'
-import { setAttemptStatus } from '../features/competitionData/competitionDataSlice'
+import { setAttemptStatus, setDisplayedLift } from '../features/competitionData/competitionDataSlice'
 
 
 /* <li className="context-menu-item" onClick={() => setAttemptStatus(lifter.id, SQUAT, ATTEMPT_ONE, GOOD_LIFT)}> Good Lift </li>
@@ -15,6 +15,14 @@ export default function ContextMenuLightButtons({lifterID, lift ,attemptNum}) {
 
     return (
     <>
+        <li
+        className = "context-menu-item"
+        onClick = {() => dispatch(setDisplayedLift({
+            lifterID,
+            lift,
+            attemptNum
+        }))} 
+        >📺 Focus Lift</li>
         <li 
         className="context-menu-item" 
         onClick={() => dispatch(setAttemptStatus({

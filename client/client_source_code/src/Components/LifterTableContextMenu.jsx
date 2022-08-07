@@ -8,7 +8,6 @@ function LifterTableContextMenu({posX, posY, isShown, children}) {
     let menuDisplayStyle = {
         top: posY + "px",
         left: posX + "px",
-        display: isShown ? "flex" : "none"
     }
 
     return (
