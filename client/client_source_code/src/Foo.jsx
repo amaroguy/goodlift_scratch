@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { io, Socket } from 'socket.io-client'
+import { SOCKET_URL } from './util'
 
 export default function Foo() {
 
@@ -10,8 +11,8 @@ export default function Foo() {
     const secondSocketRef = useRef(null)
 
     useEffect(() => {
-        const firstSocket = io.connect("http://localhost:3001")
-        const secondSocket = io.connect("http://localhost:3001")
+        const firstSocket = io.connect(SOCKET_URL)
+        const secondSocket = io.connect(SOCKET_URL)
 
         firstSocket.on('bar', (data) => {
             console.log(data.msg)

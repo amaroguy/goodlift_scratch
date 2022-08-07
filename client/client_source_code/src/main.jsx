@@ -8,8 +8,6 @@ import {LifterContextProvider} from './Components/LifterContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-    <LifterContextProvider>
       <App/>
-    </LifterContextProvider>
   // </React.StrictMode>
 )

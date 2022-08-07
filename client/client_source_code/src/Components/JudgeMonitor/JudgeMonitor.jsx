@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { io, Socket } from 'socket.io-client'
 import { useParams } from 'react-router-dom'
-import { TABLE_HEADINGS, HEADING_SPANS, REF_SIDE_LEFT, REF_MIDDLE, REF_SIDE_RIGHT } from '../../util'
+import { TABLE_HEADINGS, HEADING_SPANS, REF_SIDE_LEFT, REF_MIDDLE, REF_SIDE_RIGHT, SOCKET_URL } from '../../util'
 import JudgeMonitorTable from './JudgeMonitorTable'
 import JudgeMonitorCurrentLifter from './JudgeMonitorCurrentLifter'
 import './JudgeMonitor.css'
@@ -20,8 +20,8 @@ export default function JudgeMonitor() {
 
     useEffect(() => {
         console.log('foo')
-        const lightsSocket = io.connect("http://127.0.0.1:3001")
-        const tableSocket = io.connect("http://127.0.0.1:3001")
+        const lightsSocket = io.connect(SOCKET_URL)
+        const tableSocket = io.connect(SOCKET_URL)
 
 
         lightsSocket.emit("joinJudgeRoom", {username: 'SPECTATOR', judgeRole: "SPECTATOR", resultsStreamingID})
