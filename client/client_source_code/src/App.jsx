@@ -18,13 +18,16 @@ import LifterTableSpectatorMode from './Components/LifterTableSpectatorMode'
 import JudgeMonitor from './Components/JudgeMonitor/JudgeMonitor'
 import NewLights from './Components/RefLights/NewLightsForJudges'
 
+import {Provider} from 'react-redux'
+import {store} from './store'
+
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage/>} />
-        <Route path="manage" element = {<MeetManage/>} />
+        <Route path="manage" element = {<Provider store = {store}><MeetManage/></Provider>} />
         <Route path="judge" element = {<RefConnectForm/>} /> 
         <Route path = "judge/join" element = {<NewLights/>}/>
         <Route path = "debug" element = {<h2>This used to be bar</h2>}/>
